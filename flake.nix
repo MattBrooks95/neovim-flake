@@ -39,9 +39,11 @@
 						libtermkey
 						libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
 					];
+					# the 'install' bit is important so that vim can find the runtime
+					# without it, we'll get errors like "can't find syntax.vim"
 					buildPhase = ''
 						mkdir build &&\
-						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release
+						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
 					'';
 					installPhase = ''
 						pwd &&\
