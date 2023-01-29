@@ -37,14 +37,17 @@
 						tree-sitter #necessary to install neovim, I thought it was just a plugin?
 						unibilium #terminfo library
 						libtermkey
-						libvterm
+						libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
 					];
-					buildPhase = ''cd $TMP/neovim &&\
+					buildPhase = ''
+						mkdir build &&\
 						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release
 					'';
 					installPhase = ''
-						mkdir -p $out/bin
-						mv $TMP/build/bin/nvim $out/bin
+						pwd &&\
+						ls bin && \
+						mkdir -p $out/bin &&\
+						mv bin/nvim $out/bin
 					'';
 				});
 			in {
