@@ -15,6 +15,24 @@
         "type": "github"
       }
     },
+    "neovim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1672330330,
+        "narHash": "sha256-eqiH/K8w0FZNHLBBMjiTSQjNQyONqcx3X+d85gPnFJg=",
+        "ref": "release-0.8",
+        "rev": "1fa917f9a1585e3b87d41edaf74415505d1bceac",
+        "revCount": 23339,
+        "type": "git",
+        "url": "https://github.com/neovim/neovim"
+      },
+      "original": {
+        "ref": "release-0.8",
+        "rev": "1fa917f9a1585e3b87d41edaf74415505d1bceac",
+        "type": "git",
+        "url": "https://github.com/neovim/neovim"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1674956471,
@@ -33,6 +51,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "neovim": "neovim",
         "nixpkgs": "nixpkgs"
       }
     }
