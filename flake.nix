@@ -18,6 +18,26 @@
 					nativeBuildInputs = [
 						clang
 						cmake
+						libtool
+						gettext
+						libtool
+						autoconf
+						automake
+						pkg-config
+						unzip
+						curl
+						doxygen
+						libuv
+						luajit
+						luajitPackages.libluv #lua bindings for libuv
+						lua51Packages.lua
+						lua51Packages.lpeg
+						lua51Packages.mpack
+						msgpack
+						tree-sitter #necessary to install neovim, I thought it was just a plugin?
+						unibilium #terminfo library
+						libtermkey
+						libvterm
 					];
 					buildPhase = ''cd $TMP/neovim &&\
 						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release
