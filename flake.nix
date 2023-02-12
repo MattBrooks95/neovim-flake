@@ -9,7 +9,7 @@
 		};
 
 		telescope = {
-			url = "github:nvim-telescope/telescope.nvim?ref=0.1.x";
+			url = "github:nvim-telescope/telescope.nvim?ref=0.1.1";
 			flake = false;
 		};
 
@@ -71,10 +71,10 @@
 					'';
 					installPhase = ''
 						mkdir -p $out/bin &&\
-						mkdir -p $out/nvim/plugins && \
-						cp -r ${telescope} $out/nvim/plugins/telescope.nvim &&\
-						cp -r ${plenary} $out/nvim/plugins/plenary.nvim &&\
-						mv bin/nvim $out/bin
+						mv bin/nvim $out/bin &&\
+						mkdir -p $out/share/nvim/runtime/pack/flake-plugins/start &&\
+						cp -r ${telescope} $out/share/nvim/runtime/pack/flake-plugins/start/telescope.nvim &&\
+						cp -r ${plenary} $out/share/nvim/runtime/pack/flake-plugins/start/plenary.nvim
 					'';
 				});
 			in {
