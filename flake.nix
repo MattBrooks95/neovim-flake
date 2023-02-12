@@ -78,7 +78,11 @@
 					'';
 				});
 			in {
-				defaultPackage = neovim-flake;
+				packages.default = neovim-flake;
+				apps.default = {
+					type = "app";
+					program = "${self.packages.${system}.default}/bin/nvim";
+				};
 			}
 	);
 }
