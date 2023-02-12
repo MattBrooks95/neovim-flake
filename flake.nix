@@ -37,11 +37,6 @@
 					buildInputs = [
 						ripgrep
 						fd
-						#this is not working, I need to figure out how to get the plugin directories
-						#to be available to vim, it doesn't even look like they are getting pulled into
-						# the package build directory
-						#plenary
-						#telescope
 					];
 					nativeBuildInputs = [
 						clang
@@ -70,17 +65,15 @@
 					# the 'install' bit is important so that vim can find the runtime
 					# without it, we'll get errors like "can't find syntax.vim"
 					buildPhase = ''
+						ls && \
 						mkdir build &&\
 						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
 					'';
 					installPhase = ''
-						pwd &&\
-						ls && \
-						ls bin && \
 						mkdir -p $out/bin &&\
 						mkdir -p $out/nvim/plugins && \
-						mv telescope.nvim $out/nvim/plugins/telescope.nvim &&\
-						mv plenary.nvim $out/nvim/plugins/plenary.nvim &&\
+						cp -r ${telescope} $out/nvim/plugins/telescope.nvim &&\
+						cp -r ${plenary} $out/nvim/plugins/plenary.nvim &&\
 						mv bin/nvim $out/bin
 					'';
 				});
