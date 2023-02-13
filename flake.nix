@@ -8,6 +8,13 @@
 			flake = false;
 		};
 
+		# my understanding is that tree-sitter comes with neovim,
+		#but the treesitter-nvim plugin is necessary to configure it
+		nvim-treesitter = {
+			url = "github:nvim-treesitter/nvim-treesitter?ref=v0.8.1";
+			flake = false;
+		};
+
 		telescope = {
 			url = "github:nvim-telescope/telescope.nvim?ref=0.1.1";
 			flake = false;
@@ -26,9 +33,16 @@
 	};
 	#flake-utils is an abstraction that saves us from needing to specify all the architectures
 	#that our package supports
-	outputs = { self, nixpkgs, flake-utils, neovim, plenary, telescope }: flake-utils.lib.eachDefaultSystem(system:
+	outputs = inputs @ { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter }: flake-utils.lib.eachDefaultSystem(system:
 			let pkgs = nixpkgs.legacyPackages.${system};
 				packageName = "neovim-flake";
+				lib = import ./lib { inherit nixpkgs inputs; };
+				pluginDirs = lib.pluginHelpers;
+				#packDir = "${out}/share/nvim/runtime/pack";
+				#pluginPackageName = "flake-plugins";
+				#pluginPackageDir = "${packDir}/${pluginPackageName}";
+				#optDir = "${pluginPackageDir}/opt";
+				#startDir = "${pluginPackageDir}/start";
 				neovim-flake = (with pkgs; stdenv.mkDerivation {
 					pname = packageName;
 					version = "0.0.1";
@@ -72,9 +86,11 @@
 					installPhase = ''
 						mkdir -p $out/bin &&\
 						mv bin/nvim $out/bin &&\
-						mkdir -p $out/share/nvim/runtime/pack/flake-plugins/start &&\
-						cp -r ${telescope} $out/share/nvim/runtime/pack/flake-plugins/start/telescope.nvim &&\
-						cp -r ${plenary} $out/share/nvim/runtime/pack/flake-plugins/start/plenary.nvim
+						mkdir -p $out/${pluginDirs.startDir} &&\
+						mkdir -p $out/${pluginDirs.optDir} &&\
+						cp -r ${telescope} $out/${pluginDirs.startDir}/telescope.nvim &&\
+						cp -r ${plenary} $out/${pluginDirs.startDir}/plenary.nvim &&\
+						cp -r ${nvim-treesitter} $out/${pluginDirs.startDir}/nvim-treesitter.nvim
 					'';
 				});
 			in {

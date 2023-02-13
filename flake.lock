@@ -48,6 +48,23 @@
         "type": "github"
       }
     },
+    "nvim-treesitter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1670962668,
+        "narHash": "sha256-/hWyN4RsPt76hlusq4DPYSa6rnHzvxsxrQK4NRzpZjg=",
+        "owner": "nvim-treesitter",
+        "repo": "nvim-treesitter",
+        "rev": "69388e84c34d40c3d5c7d2f310db13276f2179e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-treesitter",
+        "ref": "v0.8.1",
+        "repo": "nvim-treesitter",
+        "type": "github"
+      }
+    },
     "plenary": {
       "flake": false,
       "locked": {
@@ -70,6 +87,7 @@
         "flake-utils": "flake-utils",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs",
+        "nvim-treesitter": "nvim-treesitter",
         "plenary": "plenary",
         "telescope": "telescope"
       }
