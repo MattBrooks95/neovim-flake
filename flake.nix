@@ -26,14 +26,39 @@
 			flake = false;
 		};
 
-		#nvim-lspconfig = {
-		#	url = "github:neovim/nvim-lspconfig?ref=v0.1.4";
-		#	flake = false;
-		#};
+		#necessary for lsp completions and snippets
+		nvim-cmp = {
+			url = "github:hrsh7th/nvim-cmp?ref=v0.0.1";
+			flake = false;
+		};
+
+		#default configurations for specific language server clients
+		nvim-lspconfig = {
+			url = "github:neovim/nvim-lspconfig?ref=v0.1.4";
+			flake = false;
+		};
+
+		luasnip = {
+			url = "github:L3MON4D3/LuaSnip?ref=v1.2.1";
+			flake = false;
+		};
+
+		#this one doesn't have release tags, but the flake lock file
+		#should ensure that it stays reproducible unless I do the update
+		cmp_luasnip = {
+			url = "github:saadparwaiz1/cmp_luasnip";
+			flake = false;
+		};
+
+		#git integration
+		vim-fugitive = {
+			url = "github:tpope/vim-fugitive?ref=v3.7";
+			flake = false;
+		};
 	};
 	#flake-utils is an abstraction that saves us from needing to specify all the architectures
 	#that our package supports
-	outputs = inputs @ { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter }: flake-utils.lib.eachDefaultSystem(system:
+	outputs = inputs @ { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter, nvim-cmp, nvim-lspconfig, luasnip, cmp_luasnip, vim-fugitive }: flake-utils.lib.eachDefaultSystem(system:
 			let pkgs = nixpkgs.legacyPackages.${system};
 				packageName = "neovim-flake";
 				lib = import ./lib { inherit nixpkgs inputs; };
@@ -90,7 +115,12 @@
 						mkdir -p $out/${pluginDirs.optDir} &&\
 						cp -r ${telescope} $out/${pluginDirs.startDir}/telescope.nvim &&\
 						cp -r ${plenary} $out/${pluginDirs.startDir}/plenary.nvim &&\
-						cp -r ${nvim-treesitter} $out/${pluginDirs.startDir}/nvim-treesitter.nvim
+						cp -r ${nvim-treesitter} $out/${pluginDirs.startDir}/nvim-treesitter.nvim &&\
+						cp -r ${nvim-cmp} $out/${pluginDirs.optDir}/nvim-cmp &&\
+						cp -r ${nvim-lspconfig} $out/${pluginDirs.optDir}/nvim-lspconfig &&\
+						cp -r ${luasnip} $out/${pluginDirs.optDir}/luasnip &&\
+						cp -r ${cmp_luasnip} $out/${pluginDirs.optDir}/cmp_luasnip
+						cp -r ${vim-fugitive} $out/${pluginDirs.optDir}/vim-fugitive
 					'';
 				});
 			in {
