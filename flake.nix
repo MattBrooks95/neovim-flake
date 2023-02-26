@@ -119,7 +119,7 @@
 						cp -r ${nvim-cmp} $out/${pluginDirs.optDir}/nvim-cmp &&\
 						cp -r ${nvim-lspconfig} $out/${pluginDirs.optDir}/nvim-lspconfig &&\
 						cp -r ${luasnip} $out/${pluginDirs.optDir}/luasnip &&\
-						cp -r ${cmp_luasnip} $out/${pluginDirs.optDir}/cmp_luasnip
+						cp -r ${cmp_luasnip} $out/${pluginDirs.optDir}/cmp_luasnip &&\
 						cp -r ${vim-fugitive} $out/${pluginDirs.optDir}/vim-fugitive
 					'';
 				});
