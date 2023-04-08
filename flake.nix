@@ -58,7 +58,7 @@
 	};
 	#flake-utils is an abstraction that saves us from needing to specify all the architectures
 	#that our package supports
-	outputs = inputs @ { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter, nvim-cmp, nvim-lspconfig, luasnip, cmp_luasnip, vim-fugitive }: flake-utils.lib.eachDefaultSystem(system:
+	outputs = { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter, nvim-cmp, nvim-lspconfig, luasnip, cmp_luasnip, vim-fugitive }@inputs: flake-utils.lib.eachDefaultSystem(system:
 			let pkgs = nixpkgs.legacyPackages.${system};
 				packageName = "neovim-flake";
 				lib = import ./lib { inherit nixpkgs inputs; };
