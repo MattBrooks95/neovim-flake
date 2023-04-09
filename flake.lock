@@ -51,17 +51,16 @@
     "neovim": {
       "flake": false,
       "locked": {
-        "lastModified": 1672330330,
-        "narHash": "sha256-eqiH/K8w0FZNHLBBMjiTSQjNQyONqcx3X+d85gPnFJg=",
+        "lastModified": 1675759034,
+        "narHash": "sha256-vnyHIanZrm9rlvl2tBXxWLsZiwUx9N4dkJ7ohXcinYg=",
         "ref": "release-0.8",
-        "rev": "1fa917f9a1585e3b87d41edaf74415505d1bceac",
-        "revCount": 23339,
+        "rev": "b1ae775de618e3e87954a88d533ec17bbef41cdf",
+        "revCount": 23379,
         "type": "git",
         "url": "https://github.com/neovim/neovim"
       },
       "original": {
         "ref": "release-0.8",
-        "rev": "1fa917f9a1585e3b87d41edaf74415505d1bceac",
         "type": "git",
         "url": "https://github.com/neovim/neovim"
       }
