@@ -103,6 +103,7 @@
 						unibilium #terminfo library
 						libtermkey
 						libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
+            libiconv
 					];
 					# the 'install' bit is important so that vim can find the runtime
 					# without it, we'll get errors like "can't find syntax.vim"
