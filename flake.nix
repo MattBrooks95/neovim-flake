@@ -76,10 +76,10 @@
 					buildInputs = [
 						ripgrep
 						fd
-					] ++ lib.optionals stdenv.isDarwin ([
+					] ++ (if stdenv.isDarwin then [
             darwin.apple_sdk.frameworks.CoreFoundation
             darwin.apple_sdk.frameworks.CoreServices
-          ]);
+          ] else []);
 					nativeBuildInputs = [
 						clang
 						cmake
