@@ -117,7 +117,9 @@
 						# buildInputs. I may be able to try compiling them when the flake is built
 						# something like this https://nixos.org/manual/nixpkgs/unstable/#managing-plugins-with-vim-packages
 						# except that requires me to use the tree-sitter from nix packages
-						clang
+						# clang
+            # I ended up needing to use gcc because some parsers failed to compile under clang
+            gcc
 						makeWrapper # necessary to allow me to make a wrapper for neovim that has clang on the path
 						cmake
 						libtool
@@ -170,7 +172,7 @@
 					# used this as a reference https://github.com/NixOS/nixpkgs/blob/4e76dff4b469172f6b083543c7686759a5155222/pkgs/tools/security/pass/default.nix
 					# which was found through:https://discourse.nixos.org/t/buildinputs-not-propagating-to-the-derivation/4975/6
 					wrapperPath = nixpkgs.lib.strings.makeBinPath ([
-						clang
+						gcc
 					]);
 					postFixup = ''
 						wrapProgram $out/bin/nvim --prefix PATH : "$out/bin:$wrapperPath"
