@@ -110,9 +110,9 @@
 						ripgrep
 						fd
 					] ++ (if stdenv.isDarwin then [
-            darwin.apple_sdk.frameworks.CoreFoundation
-            darwin.apple_sdk.frameworks.CoreServices
-          ] else []);
+						darwin.apple_sdk.frameworks.CoreFoundation
+						darwin.apple_sdk.frameworks.CoreServices
+					] else []);
 					nativeBuildInputs = [
 						# clang is only needed at build time for neovim,
 						# but tree sitter needs to compile parsers, so I'm going to try
