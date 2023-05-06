@@ -109,7 +109,10 @@
 					buildInputs = [
 						ripgrep
 						fd
-					];
+					] ++ (if stdenv.isDarwin then [
+            darwin.apple_sdk.frameworks.CoreFoundation
+            darwin.apple_sdk.frameworks.CoreServices
+          ] else []);
 					nativeBuildInputs = [
 						# clang is only needed at build time for neovim,
 						# but tree sitter needs to compile parsers, so I'm going to try
@@ -142,6 +145,7 @@
 						unibilium #terminfo library
 						libtermkey
 						libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
+            libiconv
 					];
 					# the 'install' bit is important so that vim can find the runtime
 					# without it, we'll get errors like "can't find syntax.vim"
