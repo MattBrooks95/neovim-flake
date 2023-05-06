@@ -121,8 +121,8 @@
 						# something like this https://nixos.org/manual/nixpkgs/unstable/#managing-plugins-with-vim-packages
 						# except that requires me to use the tree-sitter from nix packages
 						# clang
-            # I ended up needing to use gcc because some parsers failed to compile under clang
-            gcc
+						# I ended up needing to use gcc because some parsers failed to compile under clang
+						gcc
 						makeWrapper # necessary to allow me to make a wrapper for neovim that has clang on the path
 						cmake
 						libtool
@@ -145,7 +145,7 @@
 						unibilium #terminfo library
 						libtermkey
 						libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
-            libiconv
+						libiconv
 					];
 					# the 'install' bit is important so that vim can find the runtime
 					# without it, we'll get errors like "can't find syntax.vim"
