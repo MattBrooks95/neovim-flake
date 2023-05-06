@@ -32,6 +32,11 @@
 			flake = false;
 		};
 
+		nvim-cmp-lsp = {
+			url = "github:hrsh7th/cmp-nvim-lsp";
+			flake = false;
+		};
+
 		#default configurations for specific language server clients
 		nvim-lspconfig = {
 			url = "github:neovim/nvim-lspconfig?ref=v0.1.4";
@@ -55,30 +60,65 @@
 			url = "github:tpope/vim-fugitive?ref=v3.7";
 			flake = false;
 		};
+
+		lspkind = {
+			url = "github:onsails/lspkind.nvim";
+			flake = false;
+			};
+
+		# themes
+		dracula = {
+			url = "github:Mofiqul/dracula.nvim";
+			flake = false;
+		};
+
+		everforest = {
+			url = "github:sainnhe/everforest";
+			flake = false;
+		};
 	};
 	#flake-utils is an abstraction that saves us from needing to specify all the architectures
 	#that our package supports
-	outputs = { self, nixpkgs, flake-utils, neovim, plenary, telescope, nvim-treesitter, nvim-cmp, nvim-lspconfig, luasnip, cmp_luasnip, vim-fugitive }@inputs: flake-utils.lib.eachDefaultSystem(system:
+	outputs = { self
+		, nixpkgs
+		, flake-utils
+		, neovim
+		, plenary
+		, telescope
+		, nvim-treesitter
+		, nvim-cmp
+		, nvim-lspconfig
+		, luasnip
+		, cmp_luasnip
+		, vim-fugitive
+		, lspkind
+		, nvim-cmp-lsp
+		, dracula
+		, everforest
+	}@inputs: flake-utils.lib.eachDefaultSystem(system:
 			let pkgs = nixpkgs.legacyPackages.${system};
 				packageName = "neovim-flake";
-				lib = import ./lib { inherit nixpkgs inputs; };
-				pluginDirs = lib.pluginHelpers;
-				#packDir = "${out}/share/nvim/runtime/pack";
-				#pluginPackageName = "flake-plugins";
-				#pluginPackageDir = "${packDir}/${pluginPackageName}";
-				#optDir = "${pluginPackageDir}/opt";
-				#startDir = "${pluginPackageDir}/start";
+				mylib = import ./lib { inherit nixpkgs inputs; };
+				pluginDirs = mylib.pluginHelpers;
 				neovim-flake = (with pkgs; stdenv.mkDerivation {
 					pname = packageName;
 					version = "0.0.1";
 					src = neovim;
 					#ripgrep and fd for telescope
+					#tree sitter needs to compile parsers at runtime, so it needs clang or gcc
 					buildInputs = [
 						ripgrep
 						fd
 					];
 					nativeBuildInputs = [
+						# clang is only needed at build time for neovim,
+						# but tree sitter needs to compile parsers, so I'm going to try
+						# allowing clang to neovim at run time by moving clang to
+						# buildInputs. I may be able to try compiling them when the flake is built
+						# something like this https://nixos.org/manual/nixpkgs/unstable/#managing-plugins-with-vim-packages
+						# except that requires me to use the tree-sitter from nix packages
 						clang
+						makeWrapper # necessary to allow me to make a wrapper for neovim that has clang on the path
 						cmake
 						libtool
 						gettext
@@ -112,15 +152,28 @@
 						mkdir -p $out/bin &&\
 						mv bin/nvim $out/bin &&\
 						mkdir -p $out/${pluginDirs.startDir} &&\
-						mkdir -p $out/${pluginDirs.optDir} &&\
 						cp -r ${telescope} $out/${pluginDirs.startDir}/telescope.nvim &&\
 						cp -r ${plenary} $out/${pluginDirs.startDir}/plenary.nvim &&\
 						cp -r ${nvim-treesitter} $out/${pluginDirs.startDir}/nvim-treesitter.nvim &&\
-						cp -r ${nvim-cmp} $out/${pluginDirs.optDir}/nvim-cmp &&\
-						cp -r ${nvim-lspconfig} $out/${pluginDirs.optDir}/nvim-lspconfig &&\
-						cp -r ${luasnip} $out/${pluginDirs.optDir}/luasnip &&\
-						cp -r ${cmp_luasnip} $out/${pluginDirs.optDir}/cmp_luasnip &&\
-						cp -r ${vim-fugitive} $out/${pluginDirs.optDir}/vim-fugitive
+						cp -r ${nvim-cmp} $out/${pluginDirs.startDir}/nvim-cmp &&\
+						cp -r ${nvim-lspconfig} $out/${pluginDirs.startDir}/nvim-lspconfig &&\
+						cp -r ${luasnip} $out/${pluginDirs.startDir}/luasnip &&\
+						cp -r ${cmp_luasnip} $out/${pluginDirs.startDir}/cmp_luasnip &&\
+						cp -r ${vim-fugitive} $out/${pluginDirs.startDir}/vim-fugitive &&\
+						cp -r ${lspkind} $out/${pluginDirs.startDir}/lspkind &&\
+						cp -r ${nvim-cmp-lsp} $out/${pluginDirs.startDir}/nvim-cmp-lsp &&\
+						cp -r ${dracula} $out/${pluginDirs.startDir}/dracula &&\
+						cp -r ${everforest} $out/${pluginDirs.startDir}/everforest
+					'';
+					# wraps the neovim binary's path with access to clang,
+					# so that tree-sitter can compile parsers
+					# used this as a reference https://github.com/NixOS/nixpkgs/blob/4e76dff4b469172f6b083543c7686759a5155222/pkgs/tools/security/pass/default.nix
+					# which was found through:https://discourse.nixos.org/t/buildinputs-not-propagating-to-the-derivation/4975/6
+					wrapperPath = nixpkgs.lib.strings.makeBinPath ([
+						clang
+					]);
+					postFixup = ''
+						wrapProgram $out/bin/nvim --prefix PATH : "$out/bin:$wrapperPath"
 					'';
 				});
 			in {
