@@ -177,6 +177,8 @@
 					# which was found through:https://discourse.nixos.org/t/buildinputs-not-propagating-to-the-derivation/4975/6
 					wrapperPath = nixpkgs.lib.strings.makeBinPath ([
 						gcc
+            ripgrep
+            fd
 					]);
 					postFixup = ''
 						wrapProgram $out/bin/nvim --prefix PATH : "$out/bin:$wrapperPath"
