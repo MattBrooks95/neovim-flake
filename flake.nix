@@ -4,14 +4,14 @@
 		flake-utils.url = "github:numtide/flake-utils";
 		# neovim 0.8.2
 		neovim = {
-			url = "git+https://github.com/neovim/neovim?ref=release-0.8";
+			url = "git+https://github.com/neovim/neovim?ref=release-0.9";
 			flake = false;
 		};
 
 		# my understanding is that tree-sitter comes with neovim,
 		#but the treesitter-nvim plugin is necessary to configure it
 		nvim-treesitter = {
-			url = "github:nvim-treesitter/nvim-treesitter?ref=v0.8.1";
+			url = "github:nvim-treesitter/nvim-treesitter?ref=v0.9.0";
 			flake = false;
 		};
 
