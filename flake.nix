@@ -112,7 +112,8 @@
 					] ++ (if stdenv.isDarwin then [
 						darwin.apple_sdk.frameworks.CoreFoundation
 						darwin.apple_sdk.frameworks.CoreServices
-					] else []);
+					] else [
+					]);
 					nativeBuildInputs = [
 						# clang is only needed at build time for neovim,
 						# but tree sitter needs to compile parsers, so I'm going to try
@@ -171,17 +172,19 @@
 						cp -r ${dracula} $out/${pluginDirs.startDir}/dracula &&\
 						cp -r ${everforest} $out/${pluginDirs.startDir}/everforest
 					'';
-					# wraps the neovim binary's path with access to clang,
+					# wraps the neovim binary's path with access to gcc,
 					# so that tree-sitter can compile parsers
 					# used this as a reference https://github.com/NixOS/nixpkgs/blob/4e76dff4b469172f6b083543c7686759a5155222/pkgs/tools/security/pass/default.nix
 					# which was found through:https://discourse.nixos.org/t/buildinputs-not-propagating-to-the-derivation/4975/6
 					wrapperPath = nixpkgs.lib.strings.makeBinPath ([
 						gcc
-            ripgrep
-            fd
+						ripgrep
+						fd
 					]);
 					postFixup = ''
-						wrapProgram $out/bin/nvim --prefix PATH : "$out/bin:$wrapperPath"
+						wrapProgram $out/bin/nvim \
+								--prefix PATH : "$out/bin:$wrapperPath" \
+								--set LD_LIBRARY_PATH ${stdenv.cc.cc.lib}/lib
 					'';
 				});
 			in {
