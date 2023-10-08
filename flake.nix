@@ -4,7 +4,7 @@
 		flake-utils.url = "github:numtide/flake-utils";
 		# neovim 0.8.2
 		neovim = {
-			url = "git+https://github.com/neovim/neovim?ref=release-0.9";
+			url = "github:neovim/neovim?ref=v0.9.2";
 			flake = false;
 		};
 
@@ -76,6 +76,11 @@
 			url = "github:sainnhe/everforest";
 			flake = false;
 		};
+
+    catppuccin = {
+      url = "github:catppuccin/nvim";
+      flake = false;
+    };
 	};
 	#flake-utils is an abstraction that saves us from needing to specify all the architectures
 	#that our package supports
@@ -95,6 +100,7 @@
 		, nvim-cmp-lsp
 		, dracula
 		, everforest
+    , catppuccin
 	}@inputs: flake-utils.lib.eachDefaultSystem(system:
 			let pkgs = nixpkgs.legacyPackages.${system};
 				packageName = "neovim-flake";
@@ -155,22 +161,26 @@
 						mkdir build &&\
 						make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
 					'';
-					installPhase = ''
+					installPhase = let
+            startDir = "$out/${pluginDirs.startDir}";
+          in
+          ''
 						mkdir -p $out/bin &&\
 						mv bin/nvim $out/bin &&\
-						mkdir -p $out/${pluginDirs.startDir} &&\
-						cp -r ${telescope} $out/${pluginDirs.startDir}/telescope.nvim &&\
-						cp -r ${plenary} $out/${pluginDirs.startDir}/plenary.nvim &&\
-						cp -r ${nvim-treesitter} $out/${pluginDirs.startDir}/nvim-treesitter.nvim &&\
-						cp -r ${nvim-cmp} $out/${pluginDirs.startDir}/nvim-cmp &&\
-						cp -r ${nvim-lspconfig} $out/${pluginDirs.startDir}/nvim-lspconfig &&\
-						cp -r ${luasnip} $out/${pluginDirs.startDir}/luasnip &&\
-						cp -r ${cmp_luasnip} $out/${pluginDirs.startDir}/cmp_luasnip &&\
-						cp -r ${vim-fugitive} $out/${pluginDirs.startDir}/vim-fugitive &&\
-						cp -r ${lspkind} $out/${pluginDirs.startDir}/lspkind &&\
-						cp -r ${nvim-cmp-lsp} $out/${pluginDirs.startDir}/nvim-cmp-lsp &&\
-						cp -r ${dracula} $out/${pluginDirs.startDir}/dracula &&\
-						cp -r ${everforest} $out/${pluginDirs.startDir}/everforest
+						mkdir -p ${startDir} &&\
+						cp -r ${telescope} ${startDir}/telescope.nvim &&\
+						cp -r ${plenary} ${startDir}/plenary.nvim &&\
+						cp -r ${nvim-treesitter} ${startDir}/nvim-treesitter.nvim &&\
+						cp -r ${nvim-cmp} ${startDir}/nvim-cmp &&\
+						cp -r ${nvim-lspconfig} ${startDir}/nvim-lspconfig &&\
+						cp -r ${luasnip} ${startDir}/luasnip &&\
+						cp -r ${cmp_luasnip} ${startDir}/cmp_luasnip &&\
+						cp -r ${vim-fugitive} ${startDir}/vim-fugitive &&\
+						cp -r ${lspkind} ${startDir}/lspkind &&\
+						cp -r ${nvim-cmp-lsp} ${startDir}/nvim-cmp-lsp &&\
+						cp -r ${dracula} ${startDir}/dracula &&\
+						cp -r ${everforest} ${startDir}/everforest &&\
+            cp -r ${catppuccin} ${startDir}/catppuccin
 					'';
 					# wraps the neovim binary's path with access to gcc,
 					# so that tree-sitter can compile parsers
