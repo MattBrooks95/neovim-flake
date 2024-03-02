@@ -248,6 +248,7 @@
         "nvim-treesitter": "nvim-treesitter",
         "plenary": "plenary",
         "telescope": "telescope",
+        "tokyonight": "tokyonight",
         "vim-fugitive": "vim-fugitive"
       }
     },
@@ -280,6 +281,22 @@
         "owner": "nvim-telescope",
         "ref": "0.1.5",
         "repo": "telescope.nvim",
+        "type": "github"
+      }
+    },
+    "tokyonight": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1706697570,
+        "narHash": "sha256-mzCdcf7FINhhVLUIPv/eLohm4qMG9ndRJ5H4sFU2vO0=",
+        "owner": "folke",
+        "repo": "tokyonight.nvim",
+        "rev": "610179f7f12db3d08540b6cc61434db2eaecbcff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "tokyonight.nvim",
         "type": "github"
       }
     },
