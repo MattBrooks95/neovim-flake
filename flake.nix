@@ -85,6 +85,11 @@
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
+
+    rescript-plugin = {
+      url = "github:rescript-lang/vim-rescript";
+      flake = false;
+    };
   };
   #flake-utils is an abstraction that saves us from needing to specify all the architectures
   #that our package supports
@@ -106,6 +111,7 @@
     , everforest
     , catppuccin
     , tokyonight
+    , rescript-plugin
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
@@ -186,7 +192,8 @@
               cp -r ${dracula} ${startDir}/dracula &&\
               cp -r ${everforest} ${startDir}/everforest &&\
               cp -r ${catppuccin} ${startDir}/catppuccin &&\
-              cp -r ${tokyonight} ${startDir}/tokyonight
+              cp -r ${tokyonight} ${startDir}/tokyonight &&\
+              cp -r ${rescript-plugin} ${startDir}/rescript-plugin
             '';
           # wraps the neovim binary's path with access to gcc,
           # so that tree-sitter can compile parsers
