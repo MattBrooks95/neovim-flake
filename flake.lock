@@ -231,22 +231,6 @@
         "type": "github"
       }
     },
-    "rescript-plugin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1701197410,
-        "narHash": "sha256-JpEO1Zb+mm9dJISriticFmtPeVwZGpUAFv18wV6/dIg=",
-        "owner": "rescript-lang",
-        "repo": "vim-rescript",
-        "rev": "2065f4e1d319ffd4ff7046879f270ebbadda873e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rescript-lang",
-        "repo": "vim-rescript",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
@@ -263,10 +247,10 @@
         "nvim-lspconfig": "nvim-lspconfig",
         "nvim-treesitter": "nvim-treesitter",
         "plenary": "plenary",
-        "rescript-plugin": "rescript-plugin",
         "telescope": "telescope",
         "tokyonight": "tokyonight",
-        "vim-fugitive": "vim-fugitive"
+        "vim-fugitive": "vim-fugitive",
+        "vim-rescript": "vim-rescript"
       }
     },
     "systems": {
@@ -331,6 +315,22 @@
         "owner": "tpope",
         "ref": "v3.7",
         "repo": "vim-fugitive",
+        "type": "github"
+      }
+    },
+    "vim-rescript": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701197410,
+        "narHash": "sha256-JpEO1Zb+mm9dJISriticFmtPeVwZGpUAFv18wV6/dIg=",
+        "owner": "rescript-lang",
+        "repo": "vim-rescript",
+        "rev": "2065f4e1d319ffd4ff7046879f270ebbadda873e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rescript-lang",
+        "repo": "vim-rescript",
         "type": "github"
       }
     }

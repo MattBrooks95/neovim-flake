@@ -86,8 +86,8 @@
       flake = false;
     };
 
-    rescript-plugin = {
-      url = "github:rescript-lang/vim-rescript";
+    vim-rescript = {
+      url = "github:rescript-lang/vim-rescript?v2.1.0";
       flake = false;
     };
   };
@@ -111,7 +111,7 @@
     , everforest
     , catppuccin
     , tokyonight
-    , rescript-plugin
+    , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
@@ -193,7 +193,7 @@
               cp -r ${everforest} ${startDir}/everforest &&\
               cp -r ${catppuccin} ${startDir}/catppuccin &&\
               cp -r ${tokyonight} ${startDir}/tokyonight &&\
-              cp -r ${rescript-plugin} ${startDir}/rescript-plugin
+              cp -r ${vim-rescript} ${startDir}/vim-rescript
             '';
           # wraps the neovim binary's path with access to gcc,
           # so that tree-sitter can compile parsers
