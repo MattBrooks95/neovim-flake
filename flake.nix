@@ -116,7 +116,7 @@
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
-      pluginDirs = mylib.pluginHelpers;
+      pluginHelpers = mylib.pluginHelpers;
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -173,27 +173,41 @@
             make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
           '';
           installPhase = let
-            startDir = "$out/${pluginDirs.startDir}";
+            packDir = "$out/${pluginHelpers.packDir}";
+            concatSlash = builtins.concatStringsSep "/";
+            colorSchemePackageDir = concatSlash [packDir pluginHelpers.colorSchemePackageDirName "start"];
+            languageServerPackageDir = concatSlash [packDir pluginHelpers.languageServerPackageDirName "start"];
+            languagePackageDir = concatSlash [packDir pluginHelpers.languagePluginsPackageDirName "start"];
+            vimPluginsPackageDir = concatSlash [packDir pluginHelpers.vimPluginsPackageDirName "start"];
+            telescopePackageDir = concatSlash [packDir "telescope" "start"];
           in
             ''
               mkdir -p $out/bin &&\
               mv bin/nvim $out/bin &&\
-              mkdir -p ${startDir} &&\
-              cp -r ${telescope} ${startDir}/telescope.nvim &&\
-              cp -r ${plenary} ${startDir}/plenary.nvim &&\
-              cp -r ${nvim-treesitter} ${startDir}/nvim-treesitter.nvim &&\
-              cp -r ${nvim-cmp} ${startDir}/nvim-cmp &&\
-              cp -r ${nvim-lspconfig} ${startDir}/nvim-lspconfig &&\
-              cp -r ${luasnip} ${startDir}/luasnip &&\
-              cp -r ${cmp_luasnip} ${startDir}/cmp_luasnip &&\
-              cp -r ${vim-fugitive} ${startDir}/vim-fugitive &&\
-              cp -r ${lspkind} ${startDir}/lspkind &&\
-              cp -r ${nvim-cmp-lsp} ${startDir}/nvim-cmp-lsp &&\
-              cp -r ${dracula} ${startDir}/dracula &&\
-              cp -r ${everforest} ${startDir}/everforest &&\
-              cp -r ${catppuccin} ${startDir}/catppuccin &&\
-              cp -r ${tokyonight} ${startDir}/tokyonight &&\
-              cp -r ${vim-rescript} ${startDir}/vim-rescript
+              mkdir -p ${colorSchemePackageDir} &&\
+              mkdir -p ${languageServerPackageDir} &&\
+              mkdir -p ${languagePackageDir} &&\
+              mkdir -p ${vimPluginsPackageDir} &&\
+              mkdir -p ${telescopePackageDir} &&\
+              mkdir -p ${packDir}/tree-sitter/start &&\
+              cp -r ${telescope} ${telescopePackageDir}/telescope.nvim &&\
+              cp -r ${plenary} ${telescopePackageDir}/plenary.nvim &&\
+              cp -r ${nvim-treesitter} ${concatSlash [packDir "tree-sitter" "start"]}/nvim-treesitter.nvim &&\
+
+              cp -r ${nvim-cmp} ${languageServerPackageDir}/nvim-cmp &&\
+              cp -r ${nvim-lspconfig} ${languageServerPackageDir}/nvim-lspconfig &&\
+              cp -r ${luasnip} ${languageServerPackageDir}/luasnip &&\
+              cp -r ${cmp_luasnip} ${languageServerPackageDir}/cmp_luasnip &&\
+              cp -r ${lspkind} ${languageServerPackageDir}/lspkind &&\
+              cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
+
+              cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
+
+              cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
+              cp -r ${everforest} ${concatSlash [colorSchemePackageDir "everforest"]} &&\
+              cp -r ${catppuccin} ${concatSlash [colorSchemePackageDir "catppuccin"]} &&\
+              cp -r ${tokyonight} ${concatSlash [colorSchemePackageDir "tokyonight"]} &&\
+              cp -r ${vim-rescript} ${concatSlash [languagePackageDir "vim-rescript"]}
             '';
           # wraps the neovim binary's path with access to gcc,
           # so that tree-sitter can compile parsers
