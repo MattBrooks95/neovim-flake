@@ -38,7 +38,7 @@
 
     #default configurations for specific language server clients
     nvim-lspconfig = {
-      url = "github:neovim/nvim-lspconfig?ref=v0.1.4";
+      url = "github:neovim/nvim-lspconfig?ref=v0.1.7";
       flake = false;
     };
 
