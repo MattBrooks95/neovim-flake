@@ -117,6 +117,12 @@
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
       pluginHelpers = mylib.pluginHelpers;
+      vim-surround = pkgs.fetchFromGitHub {
+        owner = "tpope";
+        repo = "vim-surround";
+        rev = "master";
+        hash = "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=";
+      };
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -202,6 +208,7 @@
               cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
 
               cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
+              cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
 
               cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
               cp -r ${everforest} ${concatSlash [colorSchemePackageDir "everforest"]} &&\
