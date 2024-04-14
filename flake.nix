@@ -123,6 +123,12 @@
         rev = "master";
         hash = "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=";
       };
+      nvim-lualine = pkgs.fetchFromGitHub {
+        owner = "nvim-lualine";
+        repo = "lualine.nvim";
+        rev = "master";
+        hash = "sha256-WcH2dWdRDgMkwBQhcgT+Z/ArMdm+VbRhmQftx4t2kNI=";
+      };
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -186,6 +192,7 @@
             languagePackageDir = concatSlash [packDir pluginHelpers.languagePluginsPackageDirName "start"];
             vimPluginsPackageDir = concatSlash [packDir pluginHelpers.vimPluginsPackageDirName "start"];
             telescopePackageDir = concatSlash [packDir "telescope" "start"];
+            lualinePackDir = concatSlash [packDir "nvim-lualine" "start"];
           in
             ''
               mkdir -p $out/bin &&\
@@ -196,6 +203,7 @@
               mkdir -p ${vimPluginsPackageDir} &&\
               mkdir -p ${telescopePackageDir} &&\
               mkdir -p ${packDir}/tree-sitter/start &&\
+              mkdir -p ${lualinePackDir} &&\
               cp -r ${telescope} ${telescopePackageDir}/telescope.nvim &&\
               cp -r ${plenary} ${telescopePackageDir}/plenary.nvim &&\
               cp -r ${nvim-treesitter} ${concatSlash [packDir "tree-sitter" "start"]}/nvim-treesitter.nvim &&\
@@ -206,6 +214,8 @@
               cp -r ${cmp_luasnip} ${languageServerPackageDir}/cmp_luasnip &&\
               cp -r ${lspkind} ${languageServerPackageDir}/lspkind &&\
               cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
+
+              cp -r ${nvim-lualine} ${lualinePackDir}/nvim-lualine &&\
 
               cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
               cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
