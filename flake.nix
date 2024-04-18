@@ -129,6 +129,13 @@
         rev = "master";
         hash = "sha256-WcH2dWdRDgMkwBQhcgT+Z/ArMdm+VbRhmQftx4t2kNI=";
       };
+      # icons for lualine
+      nvim-web-devicons = pkgs.fetchFromGitHub {
+        owner = "nvim-tree";
+        repo = "nvim-web-devicons";
+        rev = "master";
+        hash = "sha256-nJBAust+dbpartfCnV405i0SbzBy0SmXhe6rqnP0Ruc=";
+      };
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -193,6 +200,7 @@
             vimPluginsPackageDir = concatSlash [packDir pluginHelpers.vimPluginsPackageDirName "start"];
             telescopePackageDir = concatSlash [packDir "telescope" "start"];
             lualinePackDir = concatSlash [packDir "nvim-lualine" "start"];
+            webdevIconsPackDir = concatSlash [packDir "nvim-web-devicons" "start"];
           in
             ''
               mkdir -p $out/bin &&\
@@ -204,6 +212,7 @@
               mkdir -p ${telescopePackageDir} &&\
               mkdir -p ${packDir}/tree-sitter/start &&\
               mkdir -p ${lualinePackDir} &&\
+              mkdir -p ${webdevIconsPackDir} &&\
               cp -r ${telescope} ${telescopePackageDir}/telescope.nvim &&\
               cp -r ${plenary} ${telescopePackageDir}/plenary.nvim &&\
               cp -r ${nvim-treesitter} ${concatSlash [packDir "tree-sitter" "start"]}/nvim-treesitter.nvim &&\
@@ -216,6 +225,7 @@
               cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
 
               cp -r ${nvim-lualine} ${lualinePackDir}/nvim-lualine &&\
+              cp -r ${nvim-web-devicons} ${webdevIconsPackDir}/nvim-web-devicons &&\
 
               cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
               cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
