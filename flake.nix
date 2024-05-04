@@ -133,8 +133,8 @@
       nvim-web-devicons = pkgs.fetchFromGitHub {
         owner = "nvim-tree";
         repo = "nvim-web-devicons";
-        rev = "master";
-        hash = "sha256-nJBAust+dbpartfCnV405i0SbzBy0SmXhe6rqnP0Ruc=";
+        rev = "v0.99";
+        hash = "sha256-9Z0d15vt4lz1Y8Bj2qeXADH/NleL2zhb2xJvK7EKcHE=";
       };
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
