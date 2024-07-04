@@ -1,21 +1,21 @@
 {
 	inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
     flake-utils.url = "github:numtide/flake-utils";
     neovim = {
-      url = "github:neovim/neovim?ref=v0.9.5";
+      url = "github:neovim/neovim?ref=v0.10.0";
       flake = false;
     };
 
     # my understanding is that tree-sitter comes with neovim,
     # but the treesitter-nvim plugin is necessary to configure it
     nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter?ref=v0.9.0";
+      url = "github:nvim-treesitter/nvim-treesitter?ref=v0.9.2";
       flake = false;
     };
 
     telescope = {
-      url = "github:nvim-telescope/telescope.nvim?ref=0.1.5";
+      url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
       flake = false;
     };
 
@@ -145,6 +145,7 @@
         buildInputs = [
 						ripgrep
 						fd
+            tree-sitter
 					] ++ (if stdenv.isDarwin then [
 						darwin.apple_sdk.frameworks.CoreFoundation
 						darwin.apple_sdk.frameworks.CoreServices
@@ -178,7 +179,6 @@
             lua51Packages.lpeg
             lua51Packages.mpack
             msgpack
-            tree-sitter #necessary to install neovim, I thought it was just a plugin?
             unibilium #terminfo library
             libtermkey
             libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
@@ -188,7 +188,6 @@
           # without it, we'll get errors like "can't find syntax.vim"
           buildPhase = ''
             ls && \
-            mkdir build &&\
             make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
           '';
           installPhase = let
@@ -244,6 +243,7 @@
             gcc
             ripgrep
             fd
+            tree-sitter
           ]);
           postFixup = ''
             wrapProgram $out/bin/nvim \
