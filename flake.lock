@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "catppuccin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1706700425,
-        "narHash": "sha256-qeakoy8iFMqm10rOG62b8se9Ix+6xUD18hBvXhkrMdY=",
-        "owner": "catppuccin",
-        "repo": "nvim",
-        "rev": "c2034f7b549152e5cc757820426341ea5000bc7a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "nvim",
-        "type": "github"
-      }
-    },
     "cmp_luasnip": {
       "flake": false,
       "locked": {
@@ -29,38 +13,6 @@
       "original": {
         "owner": "saadparwaiz1",
         "repo": "cmp_luasnip",
-        "type": "github"
-      }
-    },
-    "dracula": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1705994462,
-        "narHash": "sha256-yGV/bA7+Xi+LBi4Iz/SZDVl0KWoo+IO9kgfSIgTk0Ow=",
-        "owner": "Mofiqul",
-        "repo": "dracula.nvim",
-        "rev": "a6cb758d4b182d9f2b7e742910078d94877c1059",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mofiqul",
-        "repo": "dracula.nvim",
-        "type": "github"
-      }
-    },
-    "everforest": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1707564071,
-        "narHash": "sha256-t6OJvf81p1vTrXYKlady2kOr9hV1mECpocOD3gi4El0=",
-        "owner": "sainnhe",
-        "repo": "everforest",
-        "rev": "4ce8ea3588265dd7d82113d3a937f53c59685164",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sainnhe",
-        "repo": "everforest",
         "type": "github"
       }
     },
@@ -118,16 +70,16 @@
     "neovim": {
       "flake": false,
       "locked": {
-        "lastModified": 1715862872,
-        "narHash": "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=",
+        "lastModified": 1721805605,
+        "narHash": "sha256-OsHIacgorYnB/dPbzl1b6rYUzQdhTtsJYLsFLJxregk=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "27fb62988e922c2739035f477f93cc052a4fee1e",
+        "rev": "7e194f0d0c33a0a1b7ccfaf2baafdacf7f22fbb5",
         "type": "github"
       },
       "original": {
         "owner": "neovim",
-        "ref": "v0.10.0",
+        "ref": "v0.10.1",
         "repo": "neovim",
         "type": "github"
       }
@@ -234,10 +186,7 @@
     },
     "root": {
       "inputs": {
-        "catppuccin": "catppuccin",
         "cmp_luasnip": "cmp_luasnip",
-        "dracula": "dracula",
-        "everforest": "everforest",
         "flake-utils": "flake-utils",
         "lspkind": "lspkind",
         "luasnip": "luasnip",
@@ -249,7 +198,6 @@
         "nvim-treesitter": "nvim-treesitter",
         "plenary": "plenary",
         "telescope": "telescope",
-        "tokyonight": "tokyonight",
         "vim-fugitive": "vim-fugitive",
         "vim-rescript": "vim-rescript"
       }
@@ -283,22 +231,6 @@
         "owner": "nvim-telescope",
         "ref": "0.1.8",
         "repo": "telescope.nvim",
-        "type": "github"
-      }
-    },
-    "tokyonight": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1706697570,
-        "narHash": "sha256-mzCdcf7FINhhVLUIPv/eLohm4qMG9ndRJ5H4sFU2vO0=",
-        "owner": "folke",
-        "repo": "tokyonight.nvim",
-        "rev": "610179f7f12db3d08540b6cc61434db2eaecbcff",
-        "type": "github"
-      },
-      "original": {
-        "owner": "folke",
-        "repo": "tokyonight.nvim",
         "type": "github"
       }
     },

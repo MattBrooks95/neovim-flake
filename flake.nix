@@ -3,7 +3,7 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
     flake-utils.url = "github:numtide/flake-utils";
     neovim = {
-      url = "github:neovim/neovim?ref=v0.10.0";
+      url = "github:neovim/neovim?ref=v0.10.1";
       flake = false;
     };
 
@@ -65,27 +65,6 @@
       flake = false;
     };
 
-    # themes
-    dracula = {
-      url = "github:Mofiqul/dracula.nvim";
-      flake = false;
-    };
-
-    everforest = {
-      url = "github:sainnhe/everforest";
-      flake = false;
-    };
-
-    catppuccin = {
-      url = "github:catppuccin/nvim";
-      flake = false;
-    };
-
-    tokyonight = {
-      url = "github:folke/tokyonight.nvim";
-      flake = false;
-    };
-
     vim-rescript = {
       url = "github:rescript-lang/vim-rescript?v2.1.0";
       flake = false;
@@ -107,10 +86,6 @@
     , vim-fugitive
     , lspkind
     , nvim-cmp-lsp
-    , dracula
-    , everforest
-    , catppuccin
-    , tokyonight
     , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
@@ -136,6 +111,29 @@
         rev = "v0.99";
         hash = "sha256-9Z0d15vt4lz1Y8Bj2qeXADH/NleL2zhb2xJvK7EKcHE=";
       };
+
+      # themes
+      dracula = pkgs.fetchFromGitHub {
+        owner = "mofiqul";
+        repo = "dracula.nvim";
+        rev = "fdf503e52ec1c8aae07353604d891fe5a3ed5201";
+        hash = "sha256-Mor0cLSNz+IZAVjuPNLDJ3pFQn7arbLqKVykDPkTA7g=";
+      };
+
+      catppuccin = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "nvim";
+        rev = "v1.9.0";
+        hash = "sha256-QGqwQ4OjIopBrk8sWYwA9+PMoUfcYANybgiLY6QLrvg=";
+      };
+
+      tokyonight = pkgs.fetchFromGitHub {
+        owner = "folke";
+        repo = "tokyonight.nvim";
+        rev = "v4.8.0";
+        hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
+      };
+
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -230,7 +228,6 @@
               cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
 
               cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
-              cp -r ${everforest} ${concatSlash [colorSchemePackageDir "everforest"]} &&\
               cp -r ${catppuccin} ${concatSlash [colorSchemePackageDir "catppuccin"]} &&\
               cp -r ${tokyonight} ${concatSlash [colorSchemePackageDir "tokyonight"]} &&\
               cp -r ${vim-rescript} ${concatSlash [languagePackageDir "vim-rescript"]}
