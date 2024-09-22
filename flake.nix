@@ -134,6 +134,14 @@
         hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
       };
 
+      # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
+      # tree-sitter-rescript = pkgs.fetchFromGitHub {
+      #   owner = "rescript-lang";
+      #   repo = "tree-sitter-rescript";
+      #   rev = "v5.0.0";
+      #   hash = "sha256-1u+ni5Du7rJqCWwjZzmVAl5G5eJdA6CiqG7b7wpCQJw=";
+      # };
+
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -181,6 +189,8 @@
             libtermkey
             libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
             libiconv
+            # needed to build the Rescript tree sitter support
+            # nodejs_20
           ];
           # the 'install' bit is important so that vim can find the runtime
           # without it, we'll get errors like "can't find syntax.vim"
