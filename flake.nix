@@ -2,17 +2,6 @@
 	inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim = {
-      url = "github:neovim/neovim?ref=v0.10.1";
-      flake = false;
-    };
-
-    # my understanding is that tree-sitter comes with neovim,
-    # but the treesitter-nvim plugin is necessary to configure it
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter?ref=v0.9.2";
-      flake = false;
-    };
 
     telescope = {
       url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
@@ -75,10 +64,8 @@
   outputs = { self
     , nixpkgs
     , flake-utils
-    , neovim
     , plenary
     , telescope
-    , nvim-treesitter
     , nvim-cmp
     , nvim-lspconfig
     , luasnip
@@ -92,6 +79,20 @@
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
       pluginHelpers = mylib.pluginHelpers;
+      neovim = pkgs.fetchFromGitHub {
+        owner = "neovim";
+        repo = "neovim";
+        rev = "v0.10.2";
+        hash = "sha256-+qjjelYMB3MyjaESfCaGoeBURUzSVh/50uxUqStxIfY=";
+      };
+      # my understanding is that tree-sitter comes with neovim,
+      # but the treesitter-nvim plugin is necessary to configure it
+      nvim-treesitter = pkgs.fetchFromGitHub {
+        owner = "nvim-treesitter";
+        repo = "nvim-treesitter";
+        rev = "v0.9.3";
+        hash = "sha256-8MQWi9FmcsD+p3c9neaoocnoDpNOskRvUPXAf+iJZDs=";
+      };
       vim-surround = pkgs.fetchFromGitHub {
         owner = "tpope";
         repo = "vim-surround";
