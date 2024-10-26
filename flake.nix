@@ -117,8 +117,8 @@
       dracula = pkgs.fetchFromGitHub {
         owner = "mofiqul";
         repo = "dracula.nvim";
-        rev = "fdf503e52ec1c8aae07353604d891fe5a3ed5201";
-        hash = "sha256-Mor0cLSNz+IZAVjuPNLDJ3pFQn7arbLqKVykDPkTA7g=";
+        rev = "94fa7885a06a67f0a8bfa03e064619d05d1ba496";
+        hash = "sha256-3jFOaFtH+EIx4mUKV0U/cFkUo8By0JgorTYgFUKEs/s=";
       };
 
       catppuccin = pkgs.fetchFromGitHub {
