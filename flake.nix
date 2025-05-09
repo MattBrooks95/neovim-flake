@@ -2,18 +2,6 @@
 	inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=24.11";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim = {
-      url = "github:neovim/neovim?ref=v0.10.4";
-      flake = false;
-    };
-
-    # my understanding is that tree-sitter comes with neovim,
-    # but the treesitter-nvim plugin is necessary to configure it
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter?ref=v0.9.3";
-      flake = false;
-    };
-
     telescope = {
       url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
       flake = false;
@@ -65,27 +53,6 @@
       flake = false;
     };
 
-    # themes
-    dracula = {
-      url = "github:Mofiqul/dracula.nvim";
-      flake = false;
-    };
-
-    everforest = {
-      url = "github:sainnhe/everforest";
-      flake = false;
-    };
-
-    catppuccin = {
-      url = "github:catppuccin/nvim";
-      flake = false;
-    };
-
-    tokyonight = {
-      url = "github:folke/tokyonight.nvim";
-      flake = false;
-    };
-
     vim-rescript = {
       url = "github:rescript-lang/vim-rescript?v2.1.0";
       flake = false;
@@ -96,10 +63,8 @@
   outputs = { self
     , nixpkgs
     , flake-utils
-    , neovim
     , plenary
     , telescope
-    , nvim-treesitter
     , nvim-cmp
     , nvim-lspconfig
     , luasnip
@@ -107,16 +72,26 @@
     , vim-fugitive
     , lspkind
     , nvim-cmp-lsp
-    , dracula
-    , everforest
-    , catppuccin
-    , tokyonight
     , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
       pluginHelpers = mylib.pluginHelpers;
+      neovim = pkgs.fetchFromGitHub {
+        owner = "neovim";
+        repo  = "neovim";
+        rev   = "v0.10.4";
+        hash  = "sha256-TAuoa5GD50XB4OCHkSwP1oXfedzVrCBRutNxBp/zGLY=";
+      };
+      # my understanding is that tree-sitter comes with neovim,
+      # but the treesitter-nvim plugin is necessary to configure it
+      nvim-treesitter = pkgs.fetchFromGitHub {
+        owner = "nvim-treesitter";
+        repo = "nvim-treesitter";
+        rev = "v0.9.3";
+        hash = "sha256-8MQWi9FmcsD+p3c9neaoocnoDpNOskRvUPXAf+iJZDs=";
+      };
       vim-surround = pkgs.fetchFromGitHub {
         owner = "tpope";
         repo = "vim-surround";
@@ -136,6 +111,37 @@
         rev = "v0.99";
         hash = "sha256-9Z0d15vt4lz1Y8Bj2qeXADH/NleL2zhb2xJvK7EKcHE=";
       };
+
+      # themes
+      dracula = pkgs.fetchFromGitHub {
+        owner = "mofiqul";
+        repo = "dracula.nvim";
+        rev = "94fa7885a06a67f0a8bfa03e064619d05d1ba496";
+        hash = "sha256-3jFOaFtH+EIx4mUKV0U/cFkUo8By0JgorTYgFUKEs/s=";
+      };
+
+      catppuccin = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "nvim";
+        rev = "v1.9.0";
+        hash = "sha256-QGqwQ4OjIopBrk8sWYwA9+PMoUfcYANybgiLY6QLrvg=";
+      };
+
+      tokyonight = pkgs.fetchFromGitHub {
+        owner = "folke";
+        repo = "tokyonight.nvim";
+        rev = "v4.8.0";
+        hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
+      };
+
+      # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
+      # tree-sitter-rescript = pkgs.fetchFromGitHub {
+      #   owner = "rescript-lang";
+      #   repo = "tree-sitter-rescript";
+      #   rev = "v5.0.0";
+      #   hash = "sha256-1u+ni5Du7rJqCWwjZzmVAl5G5eJdA6CiqG7b7wpCQJw=";
+      # };
+
       neovim-flake = (with pkgs; stdenv.mkDerivation {
         pname = packageName;
         version = "0.0.1";
@@ -145,7 +151,7 @@
         buildInputs = [
 						ripgrep
 						fd
-            # tree-sitter
+            tree-sitter
 					] ++ (if stdenv.isDarwin then [
 						darwin.apple_sdk.frameworks.CoreFoundation
 						darwin.apple_sdk.frameworks.CoreServices
@@ -183,9 +189,6 @@
             libtermkey
             libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
             libiconv
-            cargo
-            utf8proc
-            tree-sitter
           ];
           # the 'install' bit is important so that vim can find the runtime
           # without it, we'll get errors like "can't find syntax.vim"
@@ -232,7 +235,6 @@
               cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
 
               cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
-              cp -r ${everforest} ${concatSlash [colorSchemePackageDir "everforest"]} &&\
               cp -r ${catppuccin} ${concatSlash [colorSchemePackageDir "catppuccin"]} &&\
               cp -r ${tokyonight} ${concatSlash [colorSchemePackageDir "tokyonight"]} &&\
               cp -r ${vim-rescript} ${concatSlash [languagePackageDir "vim-rescript"]}
