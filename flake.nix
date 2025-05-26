@@ -81,8 +81,8 @@
       neovim = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo  = "neovim";
-        rev   = "v0.10.4";
-        hash  = "sha256-TAuoa5GD50XB4OCHkSwP1oXfedzVrCBRutNxBp/zGLY=";
+        rev   = "v0.11.1";
+        hash  = "sha256-kJvKyNjpqIKa5aBi62jHTCb1KxQ4YgYtBh/aNYZSeO8=";
       };
       # my understanding is that tree-sitter comes with neovim,
       # but the treesitter-nvim plugin is necessary to configure it
@@ -189,6 +189,7 @@
             libtermkey
             libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
             libiconv
+            utf8proc
           ];
           # the 'install' bit is important so that vim can find the runtime
           # without it, we'll get errors like "can't find syntax.vim"
