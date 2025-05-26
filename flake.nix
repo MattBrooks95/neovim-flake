@@ -1,6 +1,6 @@
 {
 	inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=24.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.05";
     flake-utils.url = "github:numtide/flake-utils";
     telescope = {
       url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
@@ -10,35 +10,6 @@
     #this is necessary for telescope
     plenary = {
       url = "github:nvim-lua/plenary.nvim?ref=v0.1.4";
-      flake = false;
-    };
-
-    #necessary for lsp completions and snippets
-    nvim-cmp = {
-      url = "github:hrsh7th/nvim-cmp?ref=v0.0.1";
-      flake = false;
-    };
-
-    nvim-cmp-lsp = {
-      url = "github:hrsh7th/cmp-nvim-lsp";
-      flake = false;
-    };
-
-    #default configurations for specific language server clients
-    nvim-lspconfig = {
-      url = "github:neovim/nvim-lspconfig?ref=v0.1.7";
-      flake = false;
-    };
-
-    luasnip = {
-      url = "github:L3MON4D3/LuaSnip?ref=v1.2.1";
-      flake = false;
-    };
-
-    #this one doesn't have release tags, but the flake lock file
-    #should ensure that it stays reproducible unless I do the update
-    cmp_luasnip = {
-      url = "github:saadparwaiz1/cmp_luasnip";
       flake = false;
     };
 
@@ -65,13 +36,8 @@
     , flake-utils
     , plenary
     , telescope
-    , nvim-cmp
-    , nvim-lspconfig
-    , luasnip
-    , cmp_luasnip
     , vim-fugitive
     , lspkind
-    , nvim-cmp-lsp
     , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
@@ -81,8 +47,8 @@
       neovim = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo  = "neovim";
-        rev   = "v0.10.4";
-        hash  = "sha256-TAuoa5GD50XB4OCHkSwP1oXfedzVrCBRutNxBp/zGLY=";
+        rev   = "v0.11.1";
+        hash  = "sha256-kJvKyNjpqIKa5aBi62jHTCb1KxQ4YgYtBh/aNYZSeO8=";
       };
       # my understanding is that tree-sitter comes with neovim,
       # but the treesitter-nvim plugin is necessary to configure it
@@ -132,6 +98,46 @@
         repo = "tokyonight.nvim";
         rev = "v4.8.0";
         hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
+      };
+
+      #necessary for lsp completions and snippets
+      nvim-cmp = pkgs.fetchFromGitHub {
+        owner = "hrsh7th";
+        repo  = "nvim-cmp";
+        rev   = "v0.0.2";
+        hash  = "sha256-TmXpMgkPWXHn4+leojZg1V18wOiPDsKQeG1h8nGgVHo=";
+      };
+
+      nvim-cmp-lsp = pkgs.fetchFromGitHub {
+        owner = "hrsh7th";
+        repo  = "cmp-nvim-lsp";
+# latest commit as of 2025-06-06
+        rev   = "a8912b88ce488f411177fc8aed358b04dc246d7b";
+        hash  = "sha256-iaihXNCF5bB5MdeoosD/kc3QtpA/QaIDZVLiLIurBSM=";
+      };
+
+      #default configurations for specific language server clients
+      nvim-lspconfig = pkgs.fetchFromGitHub {
+        owner = "neovim";
+        repo  = "nvim-lspconfig";
+        rev   = "v2.2.0";
+        hash  = "sha256-mgWa5qubkkfZDy/I2Rts6PtXJy+luzUmSzbPb1lVerk=";
+      };
+
+      luasnip = pkgs.fetchFromGitHub {
+        owner = "L3MON4D3";
+        repo  = "LuaSnip";
+        rev   = "v2.4.0";
+        hash  = "sha256-FtDpvgbtKN9PN1cPXU0jdxj9VdScRE9W7P6d9rVftRQ=";
+      };
+
+      #this one doesn't have release tags, but the flake lock file
+      #should ensure that it stays reproducible unless I do the update
+      cmp_luasnip = pkgs.fetchFromGitHub {
+        owner = "saadparwaiz1";
+        repo  = "cmp_luasnip";
+        rev   = "98d9cb5c2c38532bd9bdb481067b20fea8f32e90";
+        hash  = "sha256-86lKQPPyqFz8jzuLajjHMKHrYnwW6+QOcPyQEx6B+gw=";
       };
 
       # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
@@ -189,6 +195,7 @@
             libtermkey
             libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
             libiconv
+            utf8proc
           ];
           # the 'install' bit is important so that vim can find the runtime
           # without it, we'll get errors like "can't find syntax.vim"
