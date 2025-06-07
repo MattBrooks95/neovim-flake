@@ -166,7 +166,7 @@
 					nativeBuildInputs = let
             patchedLpeg = if !stdenv.isDarwin then lua51Packages.lpeg else
               lua51Packages.lpeg.overrideAttrs (finalAttrs: previousAttrs: {
-                patches = previousAttrs.patches ++ [ lpeg-dylib.patch ];
+                patches = (previousAttrs.patches or []) ++ [ ./lpeg-dylib.patch ];
             });
           in [
             # clang is only needed at build time for neovim,
