@@ -40,7 +40,15 @@
     , lspkind
     , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
-    let pkgs = nixpkgs.legacyPackages.${system};
+    let pkgs = nixpkgs.legacyPackages.${system}.extend (_: prev: {
+            lua51Packages = prev.lua51Packages;#let prevLuaPackages = prev.lua51Packages; in prevLuaPackages.override {
+              #  lpeg = if prev.stdenv.isDarwin then
+              #      prevLuaPackages.lpeg.overrideAttrs (_: previousLpegAttrs: {
+              #        patches = (previousLpegAttrs.patches or []) ++ [ ./lpeg-dylib.patch ];
+              #      })
+              #    else prevLuaPackages.lpeg;
+              #};
+            });
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
       pluginHelpers = mylib.pluginHelpers;
@@ -163,12 +171,7 @@
 						darwin.apple_sdk.frameworks.CoreServices
 					] else [
 					]);
-					nativeBuildInputs = let
-            patchedLpeg = if !stdenv.isDarwin then lua51Packages.lpeg else
-              lua51Packages.lpeg.overrideAttrs (finalAttrs: previousAttrs: {
-                patches = (previousAttrs.patches or []) ++ [ ./lpeg-dylib.patch ];
-            });
-          in [
+					nativeBuildInputs = [
             # clang is only needed at build time for neovim,
             # but tree sitter needs to compile parsers, so I'm going to try
             # allowing clang to neovim at run time by moving clang to
@@ -194,7 +197,7 @@
             luajitPackages.libluv #lua bindings for libuv
             lua51Packages.lua
             lua51Packages.mpack
-            patchedLpeg
+            lua51Packages.lpeg
             msgpack
             unibilium #terminfo library
             libtermkey
