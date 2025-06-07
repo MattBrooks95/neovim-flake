@@ -40,15 +40,17 @@
     , lspkind
     , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
-    let pkgs = nixpkgs.legacyPackages.${system}.extend (_: prev: {
-            lua51Packages = prev.lua51Packages;#let prevLuaPackages = prev.lua51Packages; in prevLuaPackages.override {
-              #  lpeg = if prev.stdenv.isDarwin then
-              #      prevLuaPackages.lpeg.overrideAttrs (_: previousLpegAttrs: {
-              #        patches = (previousLpegAttrs.patches or []) ++ [ ./lpeg-dylib.patch ];
-              #      })
-              #    else prevLuaPackages.lpeg;
-              #};
-            });
+    let pkgs = nixpkgs.legacyPackages.${system};
+    # .extend (_: prev: {
+    #         lua51Packages =
+    #           prev.lua51Packages.override {
+    #               lpeg = if prev.stdenv.isDarwin then
+    #                   luaPrev.lpeg.overrideAttrs (_: previousLpegAttrs: {
+    #                     patches = (previousLpegAttrs.patches or []) ++ [ ./lpeg-dylib.patch ];
+    #                   })
+    #                 else luaPrev.lpeg;
+    #           });
+    #         });
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
       pluginHelpers = mylib.pluginHelpers;
@@ -197,7 +199,11 @@
             luajitPackages.libluv #lua bindings for libuv
             lua51Packages.lua
             lua51Packages.mpack
-            lua51Packages.lpeg
+            (if stdenv.isDarwin then lua51Packages.lpeg else
+              lua51Packages.lpeg.overrideAttrs(_: prev: {
+                patches = [ ./lpeg-dylib.patch ];
+              })
+            )
             msgpack
             unibilium #terminfo library
             libtermkey
