@@ -150,6 +150,11 @@
         hash  = "sha256-86lKQPPyqFz8jzuLajjHMKHrYnwW6+QOcPyQEx6B+gw=";
       };
 
+      patchedLpeg = pkgs.lua51Packages.lpeg.overrideAttrs(_: previousAttrs: {
+        patches = if pkgs.stdenv.isDarwin then [ ./lpeg-dylib.patch ] else [];
+        prePatch = ''echo "doing prepatch"'';
+      });
+
       # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
       # tree-sitter-rescript = pkgs.fetchFromGitHub {
       #   owner = "rescript-lang";
@@ -199,11 +204,7 @@
             luajitPackages.libluv #lua bindings for libuv
             lua51Packages.lua
             lua51Packages.mpack
-            (if stdenv.isDarwin then lua51Packages.lpeg else
-              lua51Packages.lpeg.overrideAttrs(_: prev: {
-                patches = [ ./lpeg-dylib.patch ];
-              })
-            )
+            patchedLpeg
             msgpack
             unibilium #terminfo library
             libtermkey
