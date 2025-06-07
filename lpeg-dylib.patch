@@ -1,0 +1,13 @@
+diff --git a/makefile b/makefile
+index 41a2928..c8ebca8 100644
+--- a/makefile
++++ b/makefile
+@@ -36,7 +36,7 @@ linux:
+ 
+ # For Mac OS
+ macosx:
+-	$(MAKE) lpeg.so "DLLFLAGS = -bundle -undefined dynamic_lookup"
++	$(MAKE) lpeg.so "DLLFLAGS = -dynamiclib -undefined dynamic_lookup"
+ 
+ lpeg.so: $(FILES)
+ 	env $(CC) $(DLLFLAGS) $(FILES) -o lpeg.so

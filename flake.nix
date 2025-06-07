@@ -163,7 +163,12 @@
 						darwin.apple_sdk.frameworks.CoreServices
 					] else [
 					]);
-					nativeBuildInputs = [
+					nativeBuildInputs = let
+            patchedLpeg = if !stdenv.isDarwin then lua51Packages.lpeg else
+              lua51Packages.lpeg.overrideAttrs (finalAttrs: previousAttrs: {
+                patches = previousAttrs.patches ++ [ lpeg-dylib.patch ];
+            });
+          in [
             # clang is only needed at build time for neovim,
             # but tree sitter needs to compile parsers, so I'm going to try
             # allowing clang to neovim at run time by moving clang to
@@ -188,8 +193,8 @@
             luajit
             luajitPackages.libluv #lua bindings for libuv
             lua51Packages.lua
-            lua51Packages.lpeg
             lua51Packages.mpack
+            patchedLpeg
             msgpack
             unibilium #terminfo library
             libtermkey
