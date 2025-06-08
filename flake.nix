@@ -156,7 +156,12 @@
 
       neovim-flake =
         let mylib = import ./lib { inherit nixpkgs inputs; };
-        in pkgs.callPackage ./package.nix (githubSources // { mylib=mylib; });
+        in pkgs.callPackage ./package.nix (githubSources // {
+          mylib=mylib;
+# using the default interperter (`lua` package from nixpkgs) did not work
+# using LuaJIT did
+          lua = pkgs.luajit;
+        });
     in {
       packages.default = neovim-flake;
       apps.default = {

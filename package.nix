@@ -16,9 +16,10 @@
 , curl
 , doxygen
 , libuv
-, luajit
-, luajitPackages
-, lua51Packages
+, lua
+# , luajit
+# , luajitPackages
+# , lua51Packages
 , msgpack
 , unibilium #terminfo library
 , libtermkey
@@ -45,13 +46,47 @@
 , catppuccin
 , tokyonight
 , vim-rescript
-}: let packageName = "neovim-flake";
-in stdenv.mkDerivation {
+}: stdenv.mkDerivation (
+let packageName = "neovim-flake";
+# https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
+    nvim-lpeg-dylib = luaPkgs:
+      if stdenv.hostPlatform.isDarwin
+      then luaPkgs.lpeg # TODO do macos dylib patch 
+      else luaPkgs.lpeg; # Linux, life is good, just use the unmodified lpeg package
+    requiredLuaPkgs = ps:
+      (
+        with ps;
+        [
+          (nvim-lpeg-dylib ps)
+          luabitop # I think this is 'lua bitwise operations' or something
+          mpack
+        ]
+# the neovim-unwrapped package.nix has an option for running tests after it's built
+# I'm not going to try and support that yet because the priority is to get it working
+# on MacOS
+        # ++ lib.optionals finalAttrs.finalPackage.doCheck [
+        #   luv
+        #   coxpcall
+        #   busted
+        #   luafilesystem
+        #   penlight
+        #   inspect
+        # ]
+      );
+# I think `lua.withPackages` calls `requiredLuaPkgs` passing in the packages
+# for the Lua interpreter/version that is going to be used
+    neovimLuaEnv = lua.withPackages requiredLuaPkgs;
+in {
 # TODO add 'meta'
   pname = packageName;
   version = "0.0.1";
   src = neovim;
   buildInputs = [
+    libuv
+# as mention in neovim-unwrapped, this is actually a C library
+# so it is not included in neovimLuaEnv
+    lua.pkgs.libluv
+    neovimLuaEnv
     ripgrep
     fd
     tree-sitter
@@ -79,12 +114,11 @@ in stdenv.mkDerivation {
     unzip
     curl
     doxygen
-    libuv
-    luajit
-    luajitPackages.libluv #lua bindings for libuv
-    lua51Packages.lua
-    lua51Packages.lpeg
-    lua51Packages.mpack
+    # luajit
+    # luajitPackages.libluv #lua bindings for libuv
+    # lua51Packages.lua
+    # lua51Packages.lpeg
+    # lua51Packages.mpack
     msgpack
     unibilium #terminfo library
     libtermkey
@@ -143,4 +177,4 @@ in stdenv.mkDerivation {
     --prefix PATH : "$out/bin:$wrapperPath" \
     --set LD_LIBRARY_PATH ${stdenv.cc.cc.lib}/lib
   '';
-}
+})
