@@ -18,22 +18,6 @@
         "type": "github"
       }
     },
-    "lspkind": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1733408701,
-        "narHash": "sha256-OCvKUBGuzwy8OWOL1x3Z3fo+0+GyBMI9TX41xSveqvE=",
-        "owner": "onsails",
-        "repo": "lspkind.nvim",
-        "rev": "d79a1c3299ad0ef94e255d045bed9fa26025dab6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "onsails",
-        "repo": "lspkind.nvim",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1748248653,
@@ -50,32 +34,10 @@
         "type": "github"
       }
     },
-    "plenary": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1697031827,
-        "narHash": "sha256-zR44d9MowLG1lIbvrRaFTpO/HXKKrO6lbtZfvvTdx+o=",
-        "owner": "nvim-lua",
-        "repo": "plenary.nvim",
-        "rev": "50012918b2fc8357b87cff2a7f7f0446e47da174",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-lua",
-        "ref": "v0.1.4",
-        "repo": "plenary.nvim",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "lspkind": "lspkind",
-        "nixpkgs": "nixpkgs",
-        "plenary": "plenary",
-        "telescope": "telescope",
-        "vim-fugitive": "vim-fugitive",
-        "vim-rescript": "vim-rescript"
+        "nixpkgs": "nixpkgs"
       }
     },
     "systems": {
@@ -90,56 +52,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "telescope": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1716532947,
-        "narHash": "sha256-e1ulhc4IIvUgpjKQrSqPY4WpXuez6wlxL6Min9U0o5Q=",
-        "owner": "nvim-telescope",
-        "repo": "telescope.nvim",
-        "rev": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-telescope",
-        "ref": "0.1.8",
-        "repo": "telescope.nvim",
-        "type": "github"
-      }
-    },
-    "vim-fugitive": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1654578204,
-        "narHash": "sha256-JJ/T38rz7vowsv6q4qeEaRDfMGvl9ZMJley54fOvSAI=",
-        "owner": "tpope",
-        "repo": "vim-fugitive",
-        "rev": "96c1009fcf8ce60161cc938d149dd5a66d570756",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tpope",
-        "ref": "v3.7",
-        "repo": "vim-fugitive",
-        "type": "github"
-      }
-    },
-    "vim-rescript": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722209834,
-        "narHash": "sha256-l12sg9O5elqWTFRs9asa9xMnKw5GbV7ZB8HmtjcFVps=",
-        "owner": "rescript-lang",
-        "repo": "vim-rescript",
-        "rev": "aea571554254ab9da4f997b20d2ebca2fd099c52",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rescript-lang",
-        "repo": "vim-rescript",
         "type": "github"
       }
     }

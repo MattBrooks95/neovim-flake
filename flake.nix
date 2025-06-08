@@ -2,266 +2,161 @@
 	inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.05";
     flake-utils.url = "github:numtide/flake-utils";
-    telescope = {
-      url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
-      flake = false;
-    };
-
-    #this is necessary for telescope
-    plenary = {
-      url = "github:nvim-lua/plenary.nvim?ref=v0.1.4";
-      flake = false;
-    };
-
-    #git integration
-    vim-fugitive = {
-      url = "github:tpope/vim-fugitive?ref=v3.7";
-      flake = false;
-    };
-
-    lspkind = {
-      url = "github:onsails/lspkind.nvim";
-      flake = false;
-    };
-
-    vim-rescript = {
-      url = "github:rescript-lang/vim-rescript?v2.1.0";
-      flake = false;
-    };
   };
   #flake-utils is an abstraction that saves us from needing to specify all the architectures
   #that our package supports
   outputs = { self
     , nixpkgs
     , flake-utils
-    , plenary
-    , telescope
-    , vim-fugitive
-    , lspkind
-    , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
-      mylib = import ./lib { inherit nixpkgs inputs; };
-      pluginHelpers = mylib.pluginHelpers;
-      neovim = pkgs.fetchFromGitHub {
-        owner = "neovim";
-        repo  = "neovim";
-        rev   = "v0.11.1";
-        hash  = "sha256-kJvKyNjpqIKa5aBi62jHTCb1KxQ4YgYtBh/aNYZSeO8=";
-      };
-      # my understanding is that tree-sitter comes with neovim,
-      # but the treesitter-nvim plugin is necessary to configure it
-      nvim-treesitter = pkgs.fetchFromGitHub {
-        owner = "nvim-treesitter";
-        repo = "nvim-treesitter";
-        rev = "v0.9.3";
-        hash = "sha256-8MQWi9FmcsD+p3c9neaoocnoDpNOskRvUPXAf+iJZDs=";
-      };
-      vim-surround = pkgs.fetchFromGitHub {
-        owner = "tpope";
-        repo = "vim-surround";
-        rev = "master";
-        hash = "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=";
-      };
-      nvim-lualine = pkgs.fetchFromGitHub {
-        owner = "nvim-lualine";
-        repo = "lualine.nvim";
-        rev = "master";
-        hash = "sha256-WcH2dWdRDgMkwBQhcgT+Z/ArMdm+VbRhmQftx4t2kNI=";
-      };
-      # icons for lualine
-      nvim-web-devicons = pkgs.fetchFromGitHub {
-        owner = "nvim-tree";
-        repo = "nvim-web-devicons";
-        rev = "v0.99";
-        hash = "sha256-9Z0d15vt4lz1Y8Bj2qeXADH/NleL2zhb2xJvK7EKcHE=";
-      };
+      githubSources = {
+        neovim = pkgs.fetchFromGitHub {
+          owner = "neovim";
+          repo  = "neovim";
+          rev   = "v0.11.1";
+          hash  = "sha256-kJvKyNjpqIKa5aBi62jHTCb1KxQ4YgYtBh/aNYZSeO8=";
+        };
+        # my understanding is that tree-sitter comes with neovim,
+        # but the treesitter-nvim plugin is necessary to configure it
+        nvim-treesitter = pkgs.fetchFromGitHub {
+          owner = "nvim-treesitter";
+          repo = "nvim-treesitter";
+          rev = "v0.9.3";
+          hash = "sha256-8MQWi9FmcsD+p3c9neaoocnoDpNOskRvUPXAf+iJZDs=";
+        };
+        vim-surround = pkgs.fetchFromGitHub {
+          owner = "tpope";
+          repo = "vim-surround";
+          rev = "master";
+          hash = "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=";
+        };
+        nvim-lualine = pkgs.fetchFromGitHub {
+          owner = "nvim-lualine";
+          repo = "lualine.nvim";
+          rev = "master";
+          hash = "sha256-WcH2dWdRDgMkwBQhcgT+Z/ArMdm+VbRhmQftx4t2kNI=";
+        };
+        # icons for lualine
+        nvim-web-devicons = pkgs.fetchFromGitHub {
+          owner = "nvim-tree";
+          repo = "nvim-web-devicons";
+          rev = "v0.99";
+          hash = "sha256-9Z0d15vt4lz1Y8Bj2qeXADH/NleL2zhb2xJvK7EKcHE=";
+        };
 
-      # themes
-      dracula = pkgs.fetchFromGitHub {
-        owner = "mofiqul";
-        repo = "dracula.nvim";
-        rev = "94fa7885a06a67f0a8bfa03e064619d05d1ba496";
-        hash = "sha256-3jFOaFtH+EIx4mUKV0U/cFkUo8By0JgorTYgFUKEs/s=";
-      };
+        # themes
+        dracula = pkgs.fetchFromGitHub {
+          owner = "mofiqul";
+          repo = "dracula.nvim";
+          rev = "94fa7885a06a67f0a8bfa03e064619d05d1ba496";
+          hash = "sha256-3jFOaFtH+EIx4mUKV0U/cFkUo8By0JgorTYgFUKEs/s=";
+        };
 
-      catppuccin = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "nvim";
-        rev = "v1.9.0";
-        hash = "sha256-QGqwQ4OjIopBrk8sWYwA9+PMoUfcYANybgiLY6QLrvg=";
-      };
+        catppuccin = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "nvim";
+          rev = "v1.9.0";
+          hash = "sha256-QGqwQ4OjIopBrk8sWYwA9+PMoUfcYANybgiLY6QLrvg=";
+        };
 
-      tokyonight = pkgs.fetchFromGitHub {
-        owner = "folke";
-        repo = "tokyonight.nvim";
-        rev = "v4.8.0";
-        hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
-      };
+        tokyonight = pkgs.fetchFromGitHub {
+          owner = "folke";
+          repo = "tokyonight.nvim";
+          rev = "v4.8.0";
+          hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
+        };
 
-      #necessary for lsp completions and snippets
-      nvim-cmp = pkgs.fetchFromGitHub {
-        owner = "hrsh7th";
-        repo  = "nvim-cmp";
-        rev   = "v0.0.2";
-        hash  = "sha256-TmXpMgkPWXHn4+leojZg1V18wOiPDsKQeG1h8nGgVHo=";
-      };
+        #necessary for lsp completions and snippets
+        nvim-cmp = pkgs.fetchFromGitHub {
+          owner = "hrsh7th";
+          repo  = "nvim-cmp";
+          rev   = "v0.0.2";
+          hash  = "sha256-TmXpMgkPWXHn4+leojZg1V18wOiPDsKQeG1h8nGgVHo=";
+        };
 
-      nvim-cmp-lsp = pkgs.fetchFromGitHub {
-        owner = "hrsh7th";
-        repo  = "cmp-nvim-lsp";
+        nvim-cmp-lsp = pkgs.fetchFromGitHub {
+          owner = "hrsh7th";
+          repo  = "cmp-nvim-lsp";
 # latest commit as of 2025-06-06
-        rev   = "a8912b88ce488f411177fc8aed358b04dc246d7b";
-        hash  = "sha256-iaihXNCF5bB5MdeoosD/kc3QtpA/QaIDZVLiLIurBSM=";
+          rev   = "a8912b88ce488f411177fc8aed358b04dc246d7b";
+          hash  = "sha256-iaihXNCF5bB5MdeoosD/kc3QtpA/QaIDZVLiLIurBSM=";
+        };
+
+        #default configurations for specific language server clients
+        nvim-lspconfig = pkgs.fetchFromGitHub {
+          owner = "neovim";
+          repo  = "nvim-lspconfig";
+          rev   = "v2.2.0";
+          hash  = "sha256-mgWa5qubkkfZDy/I2Rts6PtXJy+luzUmSzbPb1lVerk=";
+        };
+
+        luasnip = pkgs.fetchFromGitHub {
+          owner = "L3MON4D3";
+          repo  = "LuaSnip";
+          rev   = "v2.4.0";
+          hash  = "sha256-FtDpvgbtKN9PN1cPXU0jdxj9VdScRE9W7P6d9rVftRQ=";
+        };
+
+        #this one doesn't have release tags, but the flake lock file
+        #should ensure that it stays reproducible unless I do the update
+        cmp_luasnip = pkgs.fetchFromGitHub {
+          owner = "saadparwaiz1";
+          repo  = "cmp_luasnip";
+          rev   = "98d9cb5c2c38532bd9bdb481067b20fea8f32e90";
+          hash  = "sha256-86lKQPPyqFz8jzuLajjHMKHrYnwW6+QOcPyQEx6B+gw=";
+        };
+
+        telescope = pkgs.fetchFromGitHub {
+          hash  = "sha256-e1ulhc4IIvUgpjKQrSqPY4WpXuez6wlxL6Min9U0o5Q=";
+          owner = "nvim-telescope";
+          repo  = "telescope.nvim";
+          rev   = "a0bbec21143c7bc5f8bb02e0005fa0b982edc026";
+        };
+
+        #this is necessary for telescope
+        plenary = pkgs.fetchFromGitHub {
+          hash  = "sha256-zR44d9MowLG1lIbvrRaFTpO/HXKKrO6lbtZfvvTdx+o=";
+          owner = "nvim-lua";
+          repo  = "plenary.nvim";
+          rev   = "50012918b2fc8357b87cff2a7f7f0446e47da174";
+        };
+
+        #git integration
+        vim-fugitive = pkgs.fetchFromGitHub {
+          hash  = "sha256-JJ/T38rz7vowsv6q4qeEaRDfMGvl9ZMJley54fOvSAI=";
+          owner = "tpope";
+          repo  = "vim-fugitive";
+          rev   = "96c1009fcf8ce60161cc938d149dd5a66d570756";
+        };
+
+        lspkind = pkgs.fetchFromGitHub {
+          hash  = "sha256-OCvKUBGuzwy8OWOL1x3Z3fo+0+GyBMI9TX41xSveqvE=";
+          owner = "onsails";
+          repo  = "lspkind.nvim";
+          rev   = "d79a1c3299ad0ef94e255d045bed9fa26025dab6";
+        };
+
+        vim-rescript = pkgs.fetchFromGitHub {
+          hash  = "sha256-l12sg9O5elqWTFRs9asa9xMnKw5GbV7ZB8HmtjcFVps=";
+          owner = "rescript-lang";
+          repo  = "vim-rescript";
+          rev   = "aea571554254ab9da4f997b20d2ebca2fd099c52";
+        };
+
+        # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
+        # tree-sitter-rescript = pkgs.fetchFromGitHub {
+        #   owner = "rescript-lang";
+        #   repo = "tree-sitter-rescript";
+        #   rev = "v5.0.0";
+        #   hash = "sha256-1u+ni5Du7rJqCWwjZzmVAl5G5eJdA6CiqG7b7wpCQJw=";
+        # };
       };
 
-      #default configurations for specific language server clients
-      nvim-lspconfig = pkgs.fetchFromGitHub {
-        owner = "neovim";
-        repo  = "nvim-lspconfig";
-        rev   = "v2.2.0";
-        hash  = "sha256-mgWa5qubkkfZDy/I2Rts6PtXJy+luzUmSzbPb1lVerk=";
-      };
-
-      luasnip = pkgs.fetchFromGitHub {
-        owner = "L3MON4D3";
-        repo  = "LuaSnip";
-        rev   = "v2.4.0";
-        hash  = "sha256-FtDpvgbtKN9PN1cPXU0jdxj9VdScRE9W7P6d9rVftRQ=";
-      };
-
-      #this one doesn't have release tags, but the flake lock file
-      #should ensure that it stays reproducible unless I do the update
-      cmp_luasnip = pkgs.fetchFromGitHub {
-        owner = "saadparwaiz1";
-        repo  = "cmp_luasnip";
-        rev   = "98d9cb5c2c38532bd9bdb481067b20fea8f32e90";
-        hash  = "sha256-86lKQPPyqFz8jzuLajjHMKHrYnwW6+QOcPyQEx6B+gw=";
-      };
-
-      # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
-      # tree-sitter-rescript = pkgs.fetchFromGitHub {
-      #   owner = "rescript-lang";
-      #   repo = "tree-sitter-rescript";
-      #   rev = "v5.0.0";
-      #   hash = "sha256-1u+ni5Du7rJqCWwjZzmVAl5G5eJdA6CiqG7b7wpCQJw=";
-      # };
-
-      neovim-flake = (with pkgs; stdenv.mkDerivation {
-        pname = packageName;
-        version = "0.0.1";
-        src = neovim;
-        #ripgrep and fd for telescope
-        #tree sitter needs to compile parsers at runtime, so it needs clang or gcc
-        buildInputs = [
-						ripgrep
-						fd
-            tree-sitter
-					] ++ (if stdenv.isDarwin then [
-						darwin.apple_sdk.frameworks.CoreFoundation
-						darwin.apple_sdk.frameworks.CoreServices
-					] else [
-					]);
-					nativeBuildInputs = [
-            # clang is only needed at build time for neovim,
-            # but tree sitter needs to compile parsers, so I'm going to try
-            # allowing clang to neovim at run time by moving clang to
-            # buildInputs. I may be able to try compiling them when the flake is built
-            # something like this https://nixos.org/manual/nixpkgs/unstable/#managing-plugins-with-vim-packages
-            # except that requires me to use the tree-sitter from nix packages
-            # clang
-            # I ended up needing to use gcc because some parsers failed to compile under clang
-            gcc
-            makeWrapper # necessary to allow me to make a wrapper for neovim that has clang on the path
-            cmake
-            libtool
-            gettext
-            libtool
-            autoconf
-            automake
-            pkg-config
-            unzip
-            curl
-            doxygen
-            libuv
-            luajit
-            luajitPackages.libluv #lua bindings for libuv
-            lua51Packages.lua
-            lua51Packages.lpeg
-            lua51Packages.mpack
-            msgpack
-            unibilium #terminfo library
-            libtermkey
-            libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
-            libiconv
-            utf8proc
-          ];
-          # the 'install' bit is important so that vim can find the runtime
-          # without it, we'll get errors like "can't find syntax.vim"
-          buildPhase = ''
-            make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
-          '';
-          installPhase = let
-            packDir = "$out/${pluginHelpers.packDir}";
-            concatSlash = builtins.concatStringsSep "/";
-            colorSchemePackageDir = concatSlash [packDir pluginHelpers.colorSchemePackageDirName "start"];
-            languageServerPackageDir = concatSlash [packDir pluginHelpers.languageServerPackageDirName "start"];
-            languagePackageDir = concatSlash [packDir pluginHelpers.languagePluginsPackageDirName "start"];
-            vimPluginsPackageDir = concatSlash [packDir pluginHelpers.vimPluginsPackageDirName "start"];
-            telescopePackageDir = concatSlash [packDir "telescope" "start"];
-            lualinePackDir = concatSlash [packDir "nvim-lualine" "start"];
-            webdevIconsPackDir = concatSlash [packDir "nvim-web-devicons" "start"];
-          in
-            ''
-              mkdir -p $out/bin &&\
-              mv bin/nvim $out/bin &&\
-              mkdir -p ${colorSchemePackageDir} &&\
-              mkdir -p ${languageServerPackageDir} &&\
-              mkdir -p ${languagePackageDir} &&\
-              mkdir -p ${vimPluginsPackageDir} &&\
-              mkdir -p ${telescopePackageDir} &&\
-              mkdir -p ${packDir}/tree-sitter/start &&\
-              mkdir -p ${lualinePackDir} &&\
-              mkdir -p ${webdevIconsPackDir} &&\
-              cp -r ${telescope} ${telescopePackageDir}/telescope.nvim &&\
-              cp -r ${plenary} ${telescopePackageDir}/plenary.nvim &&\
-              cp -r ${nvim-treesitter} ${concatSlash [packDir "tree-sitter" "start"]}/nvim-treesitter.nvim &&\
-
-              cp -r ${nvim-cmp} ${languageServerPackageDir}/nvim-cmp &&\
-              cp -r ${nvim-lspconfig} ${languageServerPackageDir}/nvim-lspconfig &&\
-              cp -r ${luasnip} ${languageServerPackageDir}/luasnip &&\
-              cp -r ${cmp_luasnip} ${languageServerPackageDir}/cmp_luasnip &&\
-              cp -r ${lspkind} ${languageServerPackageDir}/lspkind &&\
-              cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
-
-              cp -r ${nvim-lualine} ${lualinePackDir}/nvim-lualine &&\
-              cp -r ${nvim-web-devicons} ${webdevIconsPackDir}/nvim-web-devicons &&\
-
-              cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
-              cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
-
-              cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
-              cp -r ${catppuccin} ${concatSlash [colorSchemePackageDir "catppuccin"]} &&\
-              cp -r ${tokyonight} ${concatSlash [colorSchemePackageDir "tokyonight"]} &&\
-              cp -r ${vim-rescript} ${concatSlash [languagePackageDir "vim-rescript"]}
-            '';
-          # wraps the neovim binary's path with access to gcc,
-          # so that tree-sitter can compile parsers
-          # used this as a reference https://github.com/NixOS/nixpkgs/blob/4e76dff4b469172f6b083543c7686759a5155222/pkgs/tools/security/pass/default.nix
-          # which was found through:https://discourse.nixos.org/t/buildinputs-not-propagating-to-the-derivation/4975/6
-          wrapperPath = nixpkgs.lib.strings.makeBinPath ([
-            gcc
-            ripgrep
-            fd
-            tree-sitter
-          ]);
-          postFixup = ''
-            wrapProgram $out/bin/nvim \
-            --prefix PATH : "$out/bin:$wrapperPath" \
-            --set LD_LIBRARY_PATH ${stdenv.cc.cc.lib}/lib
-          '';
-        });
+      neovim-flake =
+        let mylib = import ./lib { inherit nixpkgs inputs; };
+        in pkgs.callPackage ./package.nix (githubSources // { mylib=mylib; });
     in {
       packages.default = neovim-flake;
       apps.default = {
