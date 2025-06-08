@@ -43,7 +43,6 @@
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
       mylib = import ./lib { inherit nixpkgs inputs; };
-      pluginHelpers = mylib.pluginHelpers;
       neovim = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo  = "neovim";
@@ -203,48 +202,42 @@
             make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
           '';
           installPhase = let
-            packDir = "$out/${pluginHelpers.packDir}";
-            concatSlash = builtins.concatStringsSep "/";
-            colorSchemePackageDir = concatSlash [packDir pluginHelpers.colorSchemePackageDirName "start"];
-            languageServerPackageDir = concatSlash [packDir pluginHelpers.languageServerPackageDirName "start"];
-            languagePackageDir = concatSlash [packDir pluginHelpers.languagePluginsPackageDirName "start"];
-            vimPluginsPackageDir = concatSlash [packDir pluginHelpers.vimPluginsPackageDirName "start"];
-            telescopePackageDir = concatSlash [packDir "telescope" "start"];
-            lualinePackDir = concatSlash [packDir "nvim-lualine" "start"];
-            webdevIconsPackDir = concatSlash [packDir "nvim-web-devicons" "start"];
+            pluginHelpers = mylib.pluginHelpers;
+            paths = pluginHelpers.paths;
+            concatSlash = pluginHelpers.concatSlash;
           in
             ''
               mkdir -p $out/bin &&\
               mv bin/nvim $out/bin &&\
-              mkdir -p ${colorSchemePackageDir} &&\
-              mkdir -p ${languageServerPackageDir} &&\
-              mkdir -p ${languagePackageDir} &&\
-              mkdir -p ${vimPluginsPackageDir} &&\
-              mkdir -p ${telescopePackageDir} &&\
-              mkdir -p ${packDir}/tree-sitter/start &&\
-              mkdir -p ${lualinePackDir} &&\
-              mkdir -p ${webdevIconsPackDir} &&\
-              cp -r ${telescope} ${telescopePackageDir}/telescope.nvim &&\
-              cp -r ${plenary} ${telescopePackageDir}/plenary.nvim &&\
-              cp -r ${nvim-treesitter} ${concatSlash [packDir "tree-sitter" "start"]}/nvim-treesitter.nvim &&\
+              mkdir -p ${paths.colorSchemePackageDir} &&\
+              mkdir -p ${paths.languageServerPackageDir} &&\
+              mkdir -p ${paths.languagePackageDir} &&\
+              mkdir -p ${paths.vimPluginsPackageDir} &&\
+              mkdir -p ${paths.telescopePackageDir} &&\
+              mkdir -p ${paths.treeSitterPackDir} &&\
+              mkdir -p ${paths.lualinePackDir} &&\
+              mkdir -p ${paths.webdevIconsPackDir} &&\
+              cp -r ${telescope} ${paths.telescopePackageDir}/telescope.nvim &&\
+              cp -r ${plenary} ${paths.telescopePackageDir}/plenary.nvim &&\
+              cp -r ${nvim-treesitter} ${paths.treeSitterPackDir}/nvim-treesitter.nvim &&\
 
-              cp -r ${nvim-cmp} ${languageServerPackageDir}/nvim-cmp &&\
-              cp -r ${nvim-lspconfig} ${languageServerPackageDir}/nvim-lspconfig &&\
-              cp -r ${luasnip} ${languageServerPackageDir}/luasnip &&\
-              cp -r ${cmp_luasnip} ${languageServerPackageDir}/cmp_luasnip &&\
-              cp -r ${lspkind} ${languageServerPackageDir}/lspkind &&\
-              cp -r ${nvim-cmp-lsp} ${languageServerPackageDir}/nvim-cmp-lsp &&\
+              cp -r ${nvim-cmp} ${paths.languageServerPackageDir}/nvim-cmp &&\
+              cp -r ${nvim-lspconfig} ${paths.languageServerPackageDir}/nvim-lspconfig &&\
+              cp -r ${luasnip} ${paths.languageServerPackageDir}/luasnip &&\
+              cp -r ${cmp_luasnip} ${paths.languageServerPackageDir}/cmp_luasnip &&\
+              cp -r ${lspkind} ${paths.languageServerPackageDir}/lspkind &&\
+              cp -r ${nvim-cmp-lsp} ${paths.languageServerPackageDir}/nvim-cmp-lsp &&\
 
-              cp -r ${nvim-lualine} ${lualinePackDir}/nvim-lualine &&\
-              cp -r ${nvim-web-devicons} ${webdevIconsPackDir}/nvim-web-devicons &&\
+              cp -r ${nvim-lualine} ${paths.lualinePackDir}/nvim-lualine &&\
+              cp -r ${nvim-web-devicons} ${paths.webdevIconsPackDir}/nvim-web-devicons &&\
 
-              cp -r ${vim-fugitive} ${concatSlash [vimPluginsPackageDir "vim-fugitive"]} &&\
-              cp -r ${vim-surround} ${concatSlash [vimPluginsPackageDir "vim-surround"]} &&\
+              cp -r ${vim-fugitive} ${concatSlash [paths.vimPluginsPackageDir "vim-fugitive"]} &&\
+              cp -r ${vim-surround} ${concatSlash [paths.vimPluginsPackageDir "vim-surround"]} &&\
 
-              cp -r ${dracula} ${concatSlash [colorSchemePackageDir "dracula"]} &&\
-              cp -r ${catppuccin} ${concatSlash [colorSchemePackageDir "catppuccin"]} &&\
-              cp -r ${tokyonight} ${concatSlash [colorSchemePackageDir "tokyonight"]} &&\
-              cp -r ${vim-rescript} ${concatSlash [languagePackageDir "vim-rescript"]}
+              cp -r ${dracula} ${concatSlash [paths.colorSchemePackageDir "dracula"]} &&\
+              cp -r ${catppuccin} ${concatSlash [paths.colorSchemePackageDir "catppuccin"]} &&\
+              cp -r ${tokyonight} ${concatSlash [paths.colorSchemePackageDir "tokyonight"]} &&\
+              cp -r ${vim-rescript} ${concatSlash [paths.languagePackageDir "vim-rescript"]}
             '';
           # wraps the neovim binary's path with access to gcc,
           # so that tree-sitter can compile parsers
