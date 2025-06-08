@@ -2,47 +2,15 @@
 	inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.05";
     flake-utils.url = "github:numtide/flake-utils";
-    telescope = {
-      url = "github:nvim-telescope/telescope.nvim?ref=0.1.8";
-      flake = false;
-    };
-
-    #this is necessary for telescope
-    plenary = {
-      url = "github:nvim-lua/plenary.nvim?ref=v0.1.4";
-      flake = false;
-    };
-
-    #git integration
-    vim-fugitive = {
-      url = "github:tpope/vim-fugitive?ref=v3.7";
-      flake = false;
-    };
-
-    lspkind = {
-      url = "github:onsails/lspkind.nvim";
-      flake = false;
-    };
-
-    vim-rescript = {
-      url = "github:rescript-lang/vim-rescript?v2.1.0";
-      flake = false;
-    };
   };
   #flake-utils is an abstraction that saves us from needing to specify all the architectures
   #that our package supports
   outputs = { self
     , nixpkgs
     , flake-utils
-    , plenary
-    , telescope
-    , vim-fugitive
-    , lspkind
-    , vim-rescript
   }@inputs: flake-utils.lib.eachDefaultSystem(system:
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
-      mylib = import ./lib { inherit nixpkgs inputs; mylib = mylib; };
       githubSources = {
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
@@ -140,6 +108,43 @@
           hash  = "sha256-86lKQPPyqFz8jzuLajjHMKHrYnwW6+QOcPyQEx6B+gw=";
         };
 
+        telescope = pkgs.fetchFromGitHub {
+          hash  = "sha256-e1ulhc4IIvUgpjKQrSqPY4WpXuez6wlxL6Min9U0o5Q=";
+          owner = "nvim-telescope";
+          repo  = "telescope.nvim";
+          rev   = "a0bbec21143c7bc5f8bb02e0005fa0b982edc026";
+        };
+
+        #this is necessary for telescope
+        plenary = pkgs.fetchFromGitHub {
+          hash  = "sha256-zR44d9MowLG1lIbvrRaFTpO/HXKKrO6lbtZfvvTdx+o=";
+          owner = "nvim-lua";
+          repo  = "plenary.nvim";
+          rev   = "50012918b2fc8357b87cff2a7f7f0446e47da174";
+        };
+
+        #git integration
+        vim-fugitive = pkgs.fetchFromGitHub {
+          hash  = "sha256-JJ/T38rz7vowsv6q4qeEaRDfMGvl9ZMJley54fOvSAI=";
+          owner = "tpope";
+          repo  = "vim-fugitive";
+          rev   = "96c1009fcf8ce60161cc938d149dd5a66d570756";
+        };
+
+        lspkind = pkgs.fetchFromGitHub {
+          hash  = "sha256-OCvKUBGuzwy8OWOL1x3Z3fo+0+GyBMI9TX41xSveqvE=";
+          owner = "onsails";
+          repo  = "lspkind.nvim";
+          rev   = "d79a1c3299ad0ef94e255d045bed9fa26025dab6";
+        };
+
+        vim-rescript = pkgs.fetchFromGitHub {
+          hash  = "sha256-l12sg9O5elqWTFRs9asa9xMnKw5GbV7ZB8HmtjcFVps=";
+          owner = "rescript-lang";
+          repo  = "vim-rescript";
+          rev   = "aea571554254ab9da4f997b20d2ebca2fd099c52";
+        };
+
         # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
         # tree-sitter-rescript = pkgs.fetchFromGitHub {
         #   owner = "rescript-lang";
@@ -149,7 +154,9 @@
         # };
       };
 
-      neovim-flake = pkgs.callPackage ./package.nix { inherit githubSources; };
+      neovim-flake =
+        let mylib = import ./lib { inherit nixpkgs inputs; };
+        in pkgs.callPackage ./package.nix (githubSources // { mylib=mylib; });
     in {
       packages.default = neovim-flake;
       apps.default = {
