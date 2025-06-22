@@ -26,6 +26,7 @@
 , libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
 , libiconv
 , utf8proc
+, fixDarwinDylibNames
 
 # packages I will provide by using fetchFromGitHub
 , neovim
@@ -51,7 +52,22 @@ let packageName = "neovim-flake";
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
     nvim-lpeg-dylib = luaPkgs:
       if stdenv.hostPlatform.isDarwin
-      then luaPkgs.lpeg # TODO do macos dylib patch 
+      then
+        let luaLibDir = "$out/lib/lua/${lib.versions.majorMinor luaPkgs.lua.luaversion}";
+        in luaPkgs.lpeg.overrideAttrs (oa: {
+          patches = [ ./lpeg-dylib.patch ];
+          nativeBuildInputs = oa.nativeBuildInputs ++ [ fixDarwinDylibNames ];
+          preBuild = ''
+            # there seems to be implicit calls to Makefile from luarocks, we need to
+            # add a stage to build our dylib
+            make macosx
+            mkdir -p ${luaLibDir}
+            mv lpeg.dylib ${luaLibDir}/lpeg.dylib
+          '';
+          postInstall = ''
+            rm -f ${luaLibDir}/lpeg.so
+          '';
+        })
       else luaPkgs.lpeg; # Linux, life is good, just use the unmodified lpeg package
     requiredLuaPkgs = ps:
       (
@@ -91,6 +107,8 @@ in {
     fd
     tree-sitter
   ];
+# this will cause some kind of SSL issue from CMAKE? CMAKE tries to download somthing?
+# dontUseCmakeConfigure = true;
   buildPhase = ''
     make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
   '';
