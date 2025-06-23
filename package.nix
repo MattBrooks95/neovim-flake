@@ -45,6 +45,7 @@
 , dracula
 , catppuccin
 , tokyonight
+, monokai
 , vim-rescript
 }: stdenv.mkDerivation (
 let packageName = "neovim-flake";
@@ -164,6 +165,8 @@ in {
       cp -r ${dracula} ${concatSlash [paths.colorSchemePackageDir "dracula"]} &&\
       cp -r ${catppuccin} ${concatSlash [paths.colorSchemePackageDir "catppuccin"]} &&\
       cp -r ${tokyonight} ${concatSlash [paths.colorSchemePackageDir "tokyonight"]} &&\
+      cp -r ${monokai} ${concatSlash [paths.colorSchemePackageDir "monokai"]} &&\
+
       cp -r ${vim-rescript} ${concatSlash [paths.languagePackageDir "vim-rescript"]}
     '';
   wrapperPath = lib.strings.makeBinPath ([

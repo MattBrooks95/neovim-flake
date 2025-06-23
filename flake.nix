@@ -68,6 +68,14 @@
           hash = "sha256-5QeY3EevOQzz5PHDW2CUVJ7N42TRQdh7QOF9PH1YxkU=";
         };
 
+        monokai = pkgs.fetchFromGitHub {
+          # https://github.com/tanvirtin/monokai.nvim
+          owner = "tanvirtin";
+          repo  = "monokai.nvim";
+          rev   = "b8bd44d5796503173627d7a1fc51f77ec3a08a63";
+          hash  = "sha256-Q6+la2P2L1QmdsRKszBBMee8oLXHwdJGWjG/FMMFgT0=";
+        };
+
         #necessary for lsp completions and snippets
         nvim-cmp = pkgs.fetchFromGitHub {
           owner = "hrsh7th";
