@@ -15,16 +15,16 @@
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "neovim";
-          rev   = "v0.11.1";
-          hash  = "sha256-kJvKyNjpqIKa5aBi62jHTCb1KxQ4YgYtBh/aNYZSeO8=";
+          rev   = "v0.11.5";
+          hash  = "sha256-OsvLB9kynCbQ8PDQ2VQ+L56iy7pZ0ZP69J2cEG8Ad8A=";
         };
         # my understanding is that tree-sitter comes with neovim,
         # but the treesitter-nvim plugin is necessary to configure it
         nvim-treesitter = pkgs.fetchFromGitHub {
           owner = "nvim-treesitter";
           repo = "nvim-treesitter";
-          rev = "v0.9.3";
-          hash = "sha256-8MQWi9FmcsD+p3c9neaoocnoDpNOskRvUPXAf+iJZDs=";
+          rev = "v0.10.0";
+          hash = "sha256-BrY4l2irKsAmxDNPhW9eosOwsVdZjULyY6AOkqTAU4E=";
         };
         vim-surround = pkgs.fetchFromGitHub {
           owner = "tpope";
@@ -96,8 +96,8 @@
         nvim-lspconfig = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "nvim-lspconfig";
-          rev   = "v2.2.0";
-          hash  = "sha256-mgWa5qubkkfZDy/I2Rts6PtXJy+luzUmSzbPb1lVerk=";
+          rev   = "v2.5.0";
+          hash  = "sha256-BrY4l2irKsAmxDNPhW9eosOwsVdZjULyY6AOkqTAU4E=";
         };
 
         luasnip = pkgs.fetchFromGitHub {
