@@ -23,8 +23,11 @@
         nvim-treesitter = pkgs.fetchFromGitHub {
           owner = "nvim-treesitter";
           repo = "nvim-treesitter";
-          rev = "v0.10.0";
-          hash = "sha256-BrY4l2irKsAmxDNPhW9eosOwsVdZjULyY6AOkqTAU4E=";
+          rev = "8cdffc6d334731ce3703b6d870a5a34fd878208a";
+          # idk what's happeninng but the 'master' ranch is read-only, 'main' is
+          # the new branch to use, and their latest tag (v0.10.0) wouldn't build
+          # so I pinned it to the latest commit as of 2025-12-21
+          hash = "sha256-+2PF6Q2uwRs/gbhKvR4jF8rYhe0HoZfwMwZCoZinp/o=";
         };
         vim-surround = pkgs.fetchFromGitHub {
           owner = "tpope";
