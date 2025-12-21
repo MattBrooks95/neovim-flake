@@ -20,7 +20,7 @@
 # , luajit
 # , luajitPackages
 # , lua51Packages
-, msgpack
+, msgpack-c
 , unibilium #terminfo library
 , libtermkey
 , libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing
@@ -138,7 +138,7 @@ in {
     # lua51Packages.lua
     # lua51Packages.lpeg
     # lua51Packages.mpack
-    msgpack
+    msgpack-c
     unibilium #terminfo library
     libtermkey
     libvterm-neovim #libvterm wouldn't work because a <glib.h> import was failing

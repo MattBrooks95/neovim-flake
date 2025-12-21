@@ -1,6 +1,6 @@
 {
 	inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.11";
     flake-utils.url = "github:numtide/flake-utils";
   };
   #flake-utils is an abstraction that saves us from needing to specify all the architectures
