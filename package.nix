@@ -32,7 +32,7 @@
 , neovim
 , telescope
 , plenary
-, nvim-treesitter
+# , nvim-treesitter
 , nvim-cmp
 , nvim-lspconfig
 , luasnip
@@ -145,6 +145,7 @@ in {
     libiconv
     utf8proc
   ];
+  # cp -r ${nvim-treesitter} ${paths.treeSitterPackDir}/nvim-treesitter.nvim &&\
   # the 'install' bit is important so that vim can find the runtime
   # without it, we'll get errors like "can't find syntax.vim"
   installPhase = let
@@ -165,7 +166,6 @@ in {
       mkdir -p ${paths.webdevIconsPackDir} &&\
       cp -r ${telescope} ${paths.telescopePackageDir}/telescope.nvim &&\
       cp -r ${plenary} ${paths.telescopePackageDir}/plenary.nvim &&\
-      cp -r ${nvim-treesitter} ${paths.treeSitterPackDir}/nvim-treesitter.nvim &&\
 
       cp -r ${nvim-cmp} ${paths.languageServerPackageDir}/nvim-cmp &&\
       cp -r ${nvim-lspconfig} ${paths.languageServerPackageDir}/nvim-lspconfig &&\

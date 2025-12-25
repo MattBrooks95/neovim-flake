@@ -20,15 +20,15 @@
         };
         # my understanding is that tree-sitter comes with neovim,
         # but the treesitter-nvim plugin is necessary to configure it
-        nvim-treesitter = pkgs.fetchFromGitHub {
-          owner = "nvim-treesitter";
-          repo = "nvim-treesitter";
-          rev = "8cdffc6d334731ce3703b6d870a5a34fd878208a";
-          # idk what's happeninng but the 'master' ranch is read-only, 'main' is
-          # the new branch to use, and their latest tag (v0.10.0) wouldn't build
-          # so I pinned it to the latest commit as of 2025-12-21
-          hash = "sha256-+2PF6Q2uwRs/gbhKvR4jF8rYhe0HoZfwMwZCoZinp/o=";
-        };
+        # nvim-treesitter = pkgs.fetchFromGitHub {
+        #   owner = "nvim-treesitter";
+        #   repo = "nvim-treesitter";
+        #   rev = "8cdffc6d334731ce3703b6d870a5a34fd878208a";
+        #   # idk what's happeninng but the 'master' ranch is read-only, 'main' is
+        #   # the new branch to use, and their latest tag (v0.10.0) wouldn't build
+        #   # so I pinned it to the latest commit as of 2025-12-21
+        #   hash = "sha256-+2PF6Q2uwRs/gbhKvR4jF8rYhe0HoZfwMwZCoZinp/o=";
+        # };
         vim-surround = pkgs.fetchFromGitHub {
           owner = "tpope";
           repo = "vim-surround";
@@ -120,10 +120,10 @@
         };
 
         telescope = pkgs.fetchFromGitHub {
-          hash  = "sha256-e1ulhc4IIvUgpjKQrSqPY4WpXuez6wlxL6Min9U0o5Q=";
+          hash  = "sha256-e6XSJRv4KB0z+nzGWmlV/YZNwWsyrrpQTloePRKWmw4=";
           owner = "nvim-telescope";
           repo  = "telescope.nvim";
-          rev   = "a0bbec21143c7bc5f8bb02e0005fa0b982edc026";
+          rev   = "v0.2.0";
         };
 
         #this is necessary for telescope
