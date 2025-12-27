@@ -48,6 +48,8 @@
 , tokyonight
 , monokai
 , vim-rescript
+, rescript-treesitter
+, haskell-treesitter
 }: stdenv.mkDerivation (
 let packageName = "neovim-flake";
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
@@ -111,6 +113,28 @@ in {
 # this will cause some kind of SSL issue from CMAKE? CMAKE tries to download somthing?
 # dontUseCmakeConfigure = true;
   buildPhase = ''
+    echo "building treesitter parsers"
+    mkdir tree-sitter-stuff
+    pushd tree-sitter-stuff
+
+    mkdir cache
+    HOME=$build
+
+    mkdir parsers
+    cp -r ${rescript-treesitter} ./rescript
+    pushd ./rescript
+    tree-sitter build -o ../parsers/rescript.so .
+    popd
+
+    cp -r ${haskell-treesitter} ./haskell
+    pushd ./haskell
+    tree-sitter build -o ../parsers/haskell.so .
+    popd
+
+
+    popd
+    echo "finished building treesitter parsers"
+
     make -j $NIX_BUILD_CORES CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$out/nvim" install
   '';
   nativeBuildInputs = [
@@ -156,6 +180,7 @@ in {
     ''
       mkdir -p $out/bin &&\
       mv bin/nvim $out/bin &&\
+      cp -r tree-sitter-stuff/parsers $out/share/nvim/runtime/parsers &&\
       mkdir -p ${paths.colorSchemePackageDir} &&\
       mkdir -p ${paths.languageServerPackageDir} &&\
       mkdir -p ${paths.languagePackageDir} &&\

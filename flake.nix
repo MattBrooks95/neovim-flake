@@ -12,6 +12,18 @@
     let pkgs = nixpkgs.legacyPackages.${system};
       packageName = "neovim-flake";
       githubSources = {
+        rescript-treesitter = pkgs.fetchFromGitHub {
+          owner = "rescript-lang";
+          repo  = "tree-sitter-rescript";
+          rev   = "main";
+          hash  = "sha256-yNZrihl4BNvLu0Zqr4lSqvdZCeXU3KnCY7ZYC1U42R0=";
+        };
+        haskell-treesitter = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo  = "tree-sitter-haskell";
+          rev   = "master";
+          hash  = "sha256-0wmdbXHZbHkv4pTrB1fCbExx9E83l+zaocGa+SvQsZQ=";
+        };
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "neovim";
