@@ -180,7 +180,7 @@ in {
     ''
       mkdir -p $out/bin &&\
       mv bin/nvim $out/bin &&\
-      cp -r tree-sitter-stuff/parsers $out/share/nvim/runtime/parsers &&\
+      cp -r tree-sitter-stuff/parsers $out/share/nvim/runtime/parser &&\
       mkdir -p ${paths.colorSchemePackageDir} &&\
       mkdir -p ${paths.languageServerPackageDir} &&\
       mkdir -p ${paths.languagePackageDir} &&\
