@@ -50,6 +50,8 @@
 , vim-rescript
 , rescript-treesitter
 , haskell-treesitter
+, typescript-treesitter
+, markdown-treesitter
 }: stdenv.mkDerivation (
 let packageName = "neovim-flake";
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
@@ -121,16 +123,42 @@ in {
     HOME=$build
 
     mkdir parsers
+    mkdir queries
+
     cp -r ${rescript-treesitter} ./rescript
+    mkdir ./queries/rescript
     pushd ./rescript
     tree-sitter build -o ../parsers/rescript.so .
+    cp ./queries/*.scm ../queries/rescript
     popd
 
     cp -r ${haskell-treesitter} ./haskell
+    mkdir ./queries/haskell
     pushd ./haskell
     tree-sitter build -o ../parsers/haskell.so .
+    cp ./queries/*.scm ../queries/haskell
     popd
 
+    cp -r ${markdown-treesitter} ./markdown
+    mkdir ./queries/markdown
+    mkdir ./queries/markdown-inline
+    pushd ./markdown
+    tree-sitter build -o ../parsers/markdown-inline.so ./tree-sitter-markdown-inline
+    tree-sitter build -o ../parsers/markdown.so ./tree-sitter-markdown
+    cp ./tree-sitter-markdown-inline/queries/*.scm ../queries/markdown-inline
+    cp ./tree-sitter-markdown/queries/*.scm ../queries/markdown
+    popd
+
+    cp -r ${typescript-treesitter} ./typescript
+    mkdir ./queries/typescript
+    mkdir ./queries/tsx
+    pushd ./typescript
+    tree-sitter build -o ../parsers/typescript.so ./typescript
+    tree-sitter build -o ../parsers/tsx.so ./tsx
+    fd highlights.scm
+    cp ./queries/*.scm ../queries/typescript
+    cp ./queries/*.scm ../queries/tsx
+    popd
 
     popd
     echo "finished building treesitter parsers"
@@ -181,6 +209,7 @@ in {
       mkdir -p $out/bin &&\
       mv bin/nvim $out/bin &&\
       cp -r tree-sitter-stuff/parsers $out/share/nvim/runtime/parser &&\
+      cp -r tree-sitter-stuff/queries $out/share/nvim/runtime &&\
       mkdir -p ${paths.colorSchemePackageDir} &&\
       mkdir -p ${paths.languageServerPackageDir} &&\
       mkdir -p ${paths.languagePackageDir} &&\

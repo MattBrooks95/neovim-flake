@@ -24,6 +24,19 @@
           rev   = "master";
           hash  = "sha256-0wmdbXHZbHkv4pTrB1fCbExx9E83l+zaocGa+SvQsZQ=";
         };
+        markdown-treesitter = pkgs.fetchFromGitHub {
+          owner = "tree-sitter-grammars";
+          repo  = "tree-sitter-markdown";
+          rev   = "v0.5.1";
+          hash  = "sha256-IYqh6JT74deu1UU4Nyls9Eg88BvQeYEta2UXZAbuZek=";
+        };
+# TS and TSX
+        typescript-treesitter = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo  = "tree-sitter-typescript";
+          rev   = "v0.23.2";
+          hash  = "sha256-CU55+YoFJb6zWbJnbd38B7iEGkhukSVpBN7sli6GkGY=";
+        };
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "neovim";
