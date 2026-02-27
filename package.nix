@@ -51,6 +51,7 @@
 , rescript-treesitter
 , haskell-treesitter
 , typescript-treesitter
+, javascript-treesitter
 , markdown-treesitter
 , python-treesitter
 }: stdenv.mkDerivation (
@@ -117,11 +118,10 @@ in {
 # dontUseCmakeConfigure = true;
   buildPhase = ''
     echo "building treesitter parsers"
+    mkdir tree-sitter-home
+    HOME="$PWD/tree-sitter-home"
     mkdir tree-sitter-stuff
     pushd tree-sitter-stuff
-
-    mkdir cache
-    HOME=$build
 
     mkdir parsers
     mkdir queries
@@ -142,11 +142,8 @@ in {
 
     cp -r ${markdown-treesitter} ./markdown
     mkdir ./queries/markdown
-    mkdir ./queries/markdown-inline
     pushd ./markdown
-    tree-sitter build -o ../parsers/markdown-inline.so ./tree-sitter-markdown-inline
     tree-sitter build -o ../parsers/markdown.so ./tree-sitter-markdown
-    cp ./tree-sitter-markdown-inline/queries/*.scm ../queries/markdown-inline
     cp ./tree-sitter-markdown/queries/*.scm ../queries/markdown
     popd
 
@@ -156,9 +153,15 @@ in {
     pushd ./typescript
     tree-sitter build -o ../parsers/typescript.so ./typescript
     tree-sitter build -o ../parsers/tsx.so ./tsx
-    fd highlights.scm
     cp ./queries/*.scm ../queries/typescript
     cp ./queries/*.scm ../queries/tsx
+    popd
+
+    cp -r ${javascript-treesitter} ./javascript
+    mkdir ./queries/javascript
+    pushd ./javascript
+    tree-sitter build -o ../parsers/javascript.so .
+    cp ./queries/*.scm ../queries/javascript
     popd
 
     cp -r ${python-treesitter} ./python

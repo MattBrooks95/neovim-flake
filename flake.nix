@@ -37,6 +37,12 @@
           rev   = "v0.23.2";
           hash  = "sha256-CU55+YoFJb6zWbJnbd38B7iEGkhukSVpBN7sli6GkGY=";
         };
+        javascript-treesitter = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo  = "tree-sitter-javascript";
+          rev   = "v0.25.0";
+          hash  = "sha256-2Jj/SUG+k8lHlGSuPZvHjJojvQFgDiZHZzH8xLu7suE=";
+        };
         python-treesitter = pkgs.fetchFromGitHub {
           owner = "tree-sitter";
           repo  = "tree-sitter-python";
