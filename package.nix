@@ -52,6 +52,7 @@
 , haskell-treesitter
 , typescript-treesitter
 , markdown-treesitter
+, python-treesitter
 }: stdenv.mkDerivation (
 let packageName = "neovim-flake";
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
@@ -158,6 +159,13 @@ in {
     fd highlights.scm
     cp ./queries/*.scm ../queries/typescript
     cp ./queries/*.scm ../queries/tsx
+    popd
+
+    cp -r ${python-treesitter} ./python
+    mkdir ./queries/python
+    pushd ./python
+    tree-sitter build -o ../parsers/python.so .
+    cp ./queries/*.scm ../queries/python
     popd
 
     popd

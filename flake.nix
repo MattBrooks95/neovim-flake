@@ -37,6 +37,12 @@
           rev   = "v0.23.2";
           hash  = "sha256-CU55+YoFJb6zWbJnbd38B7iEGkhukSVpBN7sli6GkGY=";
         };
+        python-treesitter = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo  = "tree-sitter-python";
+          rev   = "v0.25.0";
+          hash  = "sha256-F5XH21PjPpbwYylgKdwD3MZ5o0amDt4xf/e5UikPcxY=";
+        };
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "neovim";
