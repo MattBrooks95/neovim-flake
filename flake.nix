@@ -193,6 +193,14 @@
           rev   = "aea571554254ab9da4f997b20d2ebca2fd099c52";
         };
 
+        neoformat = pkgs.fetchFromGitHub {
+          hash  = "sha256-twE2fPXxxWJqZoaNkSG0v6PzyaoDzupx/ji4oI9jlKc=";
+          owner = "sbdchd";
+          repo  = "neoformat";
+# commit from 'master' branch 2026-03-30
+          rev   = "9d95e5ca3ab263363758d5b1d7a174a30556ab2d";
+        };
+
         # TODO this fails with "error processing rule escape_sequence ... u{[0-09...]+}
         # tree-sitter-rescript = pkgs.fetchFromGitHub {
         #   owner = "rescript-lang";

@@ -54,6 +54,7 @@
 , javascript-treesitter
 , markdown-treesitter
 , python-treesitter
+, neoformat
 }: stdenv.mkDerivation (
 let packageName = "neovim-flake";
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/ne/neovim-unwrapped/package.nix#L102
@@ -241,6 +242,8 @@ in {
 
       cp -r ${nvim-lualine} ${paths.lualinePackDir}/nvim-lualine &&\
       cp -r ${nvim-web-devicons} ${paths.webdevIconsPackDir}/nvim-web-devicons &&\
+
+      cp -r ${neoformat} ${concatSlash [paths.vimPluginsPackageDir "neoformat"]} && \
 
       cp -r ${vim-fugitive} ${concatSlash [paths.vimPluginsPackageDir "vim-fugitive"]} &&\
       cp -r ${vim-surround} ${concatSlash [paths.vimPluginsPackageDir "vim-surround"]} &&\
