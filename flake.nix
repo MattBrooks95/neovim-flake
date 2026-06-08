@@ -52,8 +52,8 @@
         neovim = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo  = "neovim";
-          rev   = "v0.11.5";
-          hash  = "sha256-OsvLB9kynCbQ8PDQ2VQ+L56iy7pZ0ZP69J2cEG8Ad8A=";
+          rev   = "v0.12.2";
+          hash  = "sha256-V+jZiNv0SvG/GOOUPzmBkOQGrnrN3UW2BY2n9NxP2Eg=";
         };
         # my understanding is that tree-sitter comes with neovim,
         # but the treesitter-nvim plugin is necessary to configure it
@@ -116,6 +116,8 @@
           hash  = "sha256-Q6+la2P2L1QmdsRKszBBMee8oLXHwdJGWjG/FMMFgT0=";
         };
 
+# DEPRECATED see if you can get your config working with (neovim) native autocompletion
+# https://neovim.io/doc/user/news-0.12/
         #necessary for lsp completions and snippets
         nvim-cmp = pkgs.fetchFromGitHub {
           owner = "hrsh7th";
