@@ -37,11 +37,22 @@
           rev   = "v0.23.2";
           hash  = "sha256-CU55+YoFJb6zWbJnbd38B7iEGkhukSVpBN7sli6GkGY=";
         };
+# use this repo just for the queries for javascript, since the queries
+# defined in javascript-treesitter do not work with neovim's query engine
+        nvim-treesitter-queries-javascript = pkgs.fetchgit {
+          url  = "https://github.com/neovim-treesitter/nvim-treesitter-queries-javascript.git";
+          hash = "sha256-u/YlF2jOuP5gSaxgEI1KJc7dDt5Ntab+1vxbHdQm+LY=";
+          sparseCheckout = [
+            "queries"
+          ];
+        };
+# use the parser from this repo, at the earliest version
+# nvim-treesitter-queries-javascript claims to support
         javascript-treesitter = pkgs.fetchFromGitHub {
           owner = "tree-sitter";
           repo  = "tree-sitter-javascript";
-          rev   = "v0.25.0";
-          hash  = "sha256-2Jj/SUG+k8lHlGSuPZvHjJojvQFgDiZHZzH8xLu7suE=";
+          rev   = "v0.23.0";
+          hash  = "sha256-CtveJjChj3eX/oxc5/Blxx1YXr2B8wBrbIiRwYZqgNk=";
         };
         python-treesitter = pkgs.fetchFromGitHub {
           owner = "tree-sitter";

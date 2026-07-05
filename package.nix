@@ -52,6 +52,7 @@
 , haskell-treesitter
 , typescript-treesitter
 , javascript-treesitter
+, nvim-treesitter-queries-javascript
 , markdown-treesitter
 , python-treesitter
 , neoformat
@@ -162,7 +163,7 @@ in {
     mkdir ./queries/javascript
     pushd ./javascript
     tree-sitter build -o ../parsers/javascript.so .
-    cp ./queries/*.scm ../queries/javascript
+    cp ${nvim-treesitter-queries-javascript}/queries/*.scm ../queries/javascript
     popd
 
     cp -r ${python-treesitter} ./python
